@@ -58,11 +58,7 @@ type Operation<
     headers: RequestHeaders;
     request: RequestRequestOptions;
   };
-  response: Url extends keyof EndpointsWithMissingRequiredResponseDataSchema
-    ? Method extends EndpointsWithMissingRequiredResponseDataSchema[Url]
-      ? DeepRequired<ExtractOctokitResponse<paths[Url][Method]>>
-      : ExtractOctokitResponse<paths[Url][Method]>
-    : ExtractOctokitResponse<paths[Url][Method]>;
+  response: ExtractOctokitResponse<paths[Url][Method]>;
 };
 
 type MethodsMap = {
@@ -108,146 +104,16 @@ type ExtractOctokitResponse<R> = "responses" extends keyof R
     : SuccessResponseDataType<R["responses"]>
   : unknown;
 
-// Workaround incorrect response types
-// https://github.com/octokit/types.ts/issues/214
-type EndpointsWithMissingRequiredResponseDataSchema = {
-  "/app/hook/config": "get" | "patch";
-  "/app/installations/{installation_id}/access_tokens": "post";
-  "/emojis": "get";
-  "/enterprises/{enterprise}/actions/permissions": "get";
-  "/enterprises/{enterprise}/actions/permissions/organizations": "get";
-  "/enterprises/{enterprise}/actions/permissions/selected-actions": "get";
-  "/enterprises/{enterprise}/actions/runner-groups": "get" | "post";
-  "/enterprises/{enterprise}/actions/runner-groups/{runner_group_id}":
-    | "get"
-    | "patch";
-  "/enterprises/{enterprise}/actions/runner-groups/{runner_group_id}/organizations": "get";
-  "/enterprises/{enterprise}/actions/runner-groups/{runner_group_id}/runners": "get";
-  "/enterprises/{enterprise}/actions/runners": "get";
-  "/enterprises/{enterprise}/actions/runners/downloads": "get";
-  "/enterprises/{enterprise}/settings/billing/actions": "get";
-  "/enterprises/{enterprise}/settings/billing/packages": "get";
-  "/enterprises/{enterprise}/settings/billing/shared-storage": "get";
-  "/installation/repositories": "get";
-  "/notifications": "get";
-  "/notifications/threads/{thread_id}": "get";
-  "/orgs/{org}/actions/permissions": "get";
-  "/orgs/{org}/actions/permissions/repositories": "get";
-  "/orgs/{org}/actions/permissions/selected-actions": "get";
-  "/orgs/{org}/actions/runner-groups": "get" | "post";
-  "/orgs/{org}/actions/runner-groups/{runner_group_id}": "get" | "patch";
-  "/orgs/{org}/actions/runner-groups/{runner_group_id}/repositories": "get";
-  "/orgs/{org}/actions/runner-groups/{runner_group_id}/runners": "get";
-  "/orgs/{org}/actions/runners": "get";
-  "/orgs/{org}/actions/runners/downloads": "get";
-  "/orgs/{org}/actions/secrets": "get";
-  "/orgs/{org}/actions/secrets/{secret_name}/repositories": "get";
-  "/orgs/{org}/hooks/{hook_id}/config": "get" | "patch";
-  "/orgs/{org}/installations": "get";
-  "/orgs/{org}/invitations": "get" | "post";
-  "/orgs/{org}/settings/billing/actions": "get";
-  "/orgs/{org}/settings/billing/packages": "get";
-  "/orgs/{org}/settings/billing/shared-storage": "get";
-  "/orgs/{org}/team-sync/groups": "get";
-  "/orgs/{org}/teams/{team_slug}/invitations": "get";
-  "/orgs/{org}/teams/{team_slug}/projects": "get";
-  "/orgs/{org}/teams/{team_slug}/projects/{project_id}": "get";
-  "/orgs/{org}/teams/{team_slug}/team-sync/group-mappings": "get" | "patch";
-  "/projects/columns/cards/{card_id}/moves": "post";
-  "/projects/columns/{column_id}/moves": "post";
-  "/repos/{owner}/{repo}/actions/artifacts": "get";
-  "/repos/{owner}/{repo}/actions/permissions": "get";
-  "/repos/{owner}/{repo}/actions/permissions/selected-actions": "get";
-  "/repos/{owner}/{repo}/actions/runners": "get";
-  "/repos/{owner}/{repo}/actions/runners/downloads": "get";
-  "/repos/{owner}/{repo}/actions/runs": "get";
-  "/repos/{owner}/{repo}/actions/runs/{run_id}/artifacts": "get";
-  "/repos/{owner}/{repo}/actions/runs/{run_id}/jobs": "get";
-  "/repos/{owner}/{repo}/actions/runs/{run_id}/timing": "get";
-  "/repos/{owner}/{repo}/actions/secrets": "get";
-  "/repos/{owner}/{repo}/actions/workflows": "get";
-  "/repos/{owner}/{repo}/actions/workflows/{workflow_id}/runs": "get";
-  "/repos/{owner}/{repo}/actions/workflows/{workflow_id}/timing": "get";
-  "/repos/{owner}/{repo}/check-suites/preferences": "patch";
-  "/repos/{owner}/{repo}/check-suites/{check_suite_id}/check-runs": "get";
-  "/repos/{owner}/{repo}/code-scanning/alerts": "get";
-  "/repos/{owner}/{repo}/code-scanning/alerts/{alert_number}": "get" | "patch";
-  "/repos/{owner}/{repo}/code-scanning/analyses": "get";
-  "/repos/{owner}/{repo}/commits/{commit_sha}/branches-where-head": "get";
-  "/repos/{owner}/{repo}/commits/{ref}/check-runs": "get";
-  "/repos/{owner}/{repo}/commits/{ref}/check-suites": "get";
-  "/repos/{owner}/{repo}/commits/{ref}/statuses": "get";
-  "/repos/{owner}/{repo}/contents/{path}": "put" | "delete";
-  "/repos/{owner}/{repo}/git/blobs": "post";
-  "/repos/{owner}/{repo}/git/commits": "post";
-  "/repos/{owner}/{repo}/git/commits/{commit_sha}": "get";
-  "/repos/{owner}/{repo}/git/matching-refs/{ref}": "get";
-  "/repos/{owner}/{repo}/git/ref/{ref}": "get";
-  "/repos/{owner}/{repo}/git/refs": "post";
-  "/repos/{owner}/{repo}/git/refs/{ref}": "patch";
-  "/repos/{owner}/{repo}/hooks/{hook_id}/config": "get" | "patch";
-  "/repos/{owner}/{repo}/issues/{issue_number}/events": "get";
-  "/repos/{owner}/{repo}/issues/{issue_number}/timeline": "get";
-  "/repos/{owner}/{repo}/keys": "get" | "post";
-  "/repos/{owner}/{repo}/keys/{key_id}": "get";
-  "/repos/{owner}/{repo}/languages": "get";
-  "/repos/{owner}/{repo}/notifications": "get";
-  "/repos/{owner}/{repo}/pulls/{pull_number}/requested_reviewers": "get";
-  "/repos/{owner}/{repo}/stats/participation": "get";
-  "/repos/{owner}/{repo}/statuses/{sha}": "post";
-  "/repos/{owner}/{repo}/topics": "get" | "put";
-  "/scim/v2/enterprises/{enterprise}/Groups": "get" | "post";
-  "/scim/v2/enterprises/{enterprise}/Groups/{scim_group_id}":
-    | "get"
-    | "put"
-    | "patch";
-  "/scim/v2/enterprises/{enterprise}/Users": "get" | "post";
-  "/scim/v2/enterprises/{enterprise}/Users/{scim_user_id}":
-    | "get"
-    | "put"
-    | "patch";
-  "/search/code": "get";
-  "/search/commits": "get";
-  "/search/issues": "get";
-  "/search/labels": "get";
-  "/search/repositories": "get";
-  "/search/topics": "get";
-  "/search/users": "get";
-  "/teams/{team_id}/invitations": "get";
-  "/teams/{team_id}/projects": "get";
-  "/teams/{team_id}/projects/{project_id}": "get";
-  "/teams/{team_id}/team-sync/group-mappings": "get" | "patch";
-  "/user/installations": "get";
-  "/user/installations/{installation_id}/repositories": "get";
-  "/user/keys": "get" | "post";
-  "/user/keys/{key_id}": "get";
-  "/users/{username}/settings/billing/actions": "get";
-  "/users/{username}/settings/billing/packages": "get";
-  "/users/{username}/settings/billing/shared-storage": "get";
-};
-// https://gist.github.com/esamattis/70e9c780e08937cb0b016e04a7422010
-type NotNill<T> = T extends null | undefined ? never : T;
-type Primitive = undefined | null | boolean | string | number | Function;
-type DeepRequired<T> = T extends Primitive
-  ? NotNill<T>
-  : {
-      [P in keyof T]-?: T[P] extends Array<infer U>
-        ? Array<DeepRequired<U>>
-        : T[P] extends ReadonlyArray<infer U2>
-        ? DeepRequired<U2>
-        : DeepRequired<T[P]>;
-    };
-
 export interface Endpoints {
   /**
-   * @see https://docs.github.com/rest/reference/apps/#delete-an-installation-for-the-authenticated-app
+   * @see https://docs.github.com/rest/reference/apps#delete-an-installation-for-the-authenticated-app
    */
   "DELETE /app/installations/{installation_id}": Operation<
     "/app/installations/{installation_id}",
     "delete"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/apps/#unsuspend-an-app-installation
+   * @see https://docs.github.com/rest/reference/apps#unsuspend-an-app-installation
    */
   "DELETE /app/installations/{installation_id}/suspended": Operation<
     "/app/installations/{installation_id}/suspended",
@@ -331,7 +197,7 @@ export interface Endpoints {
     "delete"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/gists/#delete-a-gist
+   * @see https://docs.github.com/rest/reference/gists#delete-a-gist
    */
   "DELETE /gists/{gist_id}": Operation<"/gists/{gist_id}", "delete">;
   /**
@@ -342,7 +208,7 @@ export interface Endpoints {
     "delete"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/gists/#unstar-a-gist
+   * @see https://docs.github.com/rest/reference/gists#unstar-a-gist
    */
   "DELETE /gists/{gist_id}/star": Operation<"/gists/{gist_id}/star", "delete">;
   /**
@@ -413,7 +279,7 @@ export interface Endpoints {
     "delete"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/orgs/#remove-a-saml-sso-authorization-for-an-organization
+   * @see https://docs.github.com/rest/reference/orgs#remove-a-saml-sso-authorization-for-an-organization
    */
   "DELETE /orgs/{org}/credential-authorizations/{credential_id}": Operation<
     "/orgs/{org}/credential-authorizations/{credential_id}",
@@ -499,7 +365,7 @@ export interface Endpoints {
     "delete"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/teams/#delete-a-team
+   * @see https://docs.github.com/rest/reference/teams#delete-a-team
    */
   "DELETE /orgs/{org}/teams/{team_slug}": Operation<
     "/orgs/{org}/teams/{team_slug}",
@@ -520,7 +386,7 @@ export interface Endpoints {
     "delete"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/reactions/#delete-team-discussion-comment-reaction
+   * @see https://docs.github.com/rest/reference/reactions#delete-team-discussion-comment-reaction
    */
   "DELETE /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/comments/{comment_number}/reactions/{reaction_id}": Operation<
     "/orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/comments/{comment_number}/reactions/{reaction_id}",
@@ -528,7 +394,7 @@ export interface Endpoints {
     "squirrel-girl"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/reactions/#delete-team-discussion-reaction
+   * @see https://docs.github.com/rest/reference/reactions#delete-team-discussion-reaction
    */
   "DELETE /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/reactions/{reaction_id}": Operation<
     "/orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/reactions/{reaction_id}",
@@ -543,7 +409,7 @@ export interface Endpoints {
     "delete"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/teams/#remove-a-project-from-a-team
+   * @see https://docs.github.com/rest/reference/teams#remove-a-project-from-a-team
    */
   "DELETE /orgs/{org}/teams/{team_slug}/projects/{project_id}": Operation<
     "/orgs/{org}/teams/{team_slug}/projects/{project_id}",
@@ -573,7 +439,7 @@ export interface Endpoints {
     "inertia"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/projects/#delete-a-project
+   * @see https://docs.github.com/rest/reference/projects#delete-a-project
    */
   "DELETE /projects/{project_id}": Operation<
     "/projects/{project_id}",
@@ -597,7 +463,7 @@ export interface Endpoints {
     "squirrel-girl"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/repos/#delete-a-repository
+   * @see https://docs.github.com/rest/reference/repos#delete-a-repository
    */
   "DELETE /repos/{owner}/{repo}": Operation<"/repos/{owner}/{repo}", "delete">;
   /**
@@ -636,7 +502,7 @@ export interface Endpoints {
     "delete"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/repos/#disable-automated-security-fixes
+   * @see https://docs.github.com/rest/reference/repos#disable-automated-security-fixes
    */
   "DELETE /repos/{owner}/{repo}/automated-security-fixes": Operation<
     "/repos/{owner}/{repo}/automated-security-fixes",
@@ -736,7 +602,7 @@ export interface Endpoints {
     "delete"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/reactions/#delete-a-commit-comment-reaction
+   * @see https://docs.github.com/rest/reference/reactions#delete-a-commit-comment-reaction
    */
   "DELETE /repos/{owner}/{repo}/comments/{comment_id}/reactions/{reaction_id}": Operation<
     "/repos/{owner}/{repo}/comments/{comment_id}/reactions/{reaction_id}",
@@ -807,7 +673,7 @@ export interface Endpoints {
     "delete"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/reactions/#delete-an-issue-comment-reaction
+   * @see https://docs.github.com/rest/reference/reactions#delete-an-issue-comment-reaction
    */
   "DELETE /repos/{owner}/{repo}/issues/comments/{comment_id}/reactions/{reaction_id}": Operation<
     "/repos/{owner}/{repo}/issues/comments/{comment_id}/reactions/{reaction_id}",
@@ -836,14 +702,14 @@ export interface Endpoints {
     "delete"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/issues/#unlock-an-issue
+   * @see https://docs.github.com/rest/reference/issues#unlock-an-issue
    */
   "DELETE /repos/{owner}/{repo}/issues/{issue_number}/lock": Operation<
     "/repos/{owner}/{repo}/issues/{issue_number}/lock",
     "delete"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/reactions/#delete-an-issue-reaction
+   * @see https://docs.github.com/rest/reference/reactions#delete-an-issue-reaction
    */
   "DELETE /repos/{owner}/{repo}/issues/{issue_number}/reactions/{reaction_id}": Operation<
     "/repos/{owner}/{repo}/issues/{issue_number}/reactions/{reaction_id}",
@@ -887,7 +753,7 @@ export interface Endpoints {
     "delete"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/reactions/#delete-a-pull-request-comment-reaction
+   * @see https://docs.github.com/rest/reference/reactions#delete-a-pull-request-comment-reaction
    */
   "DELETE /repos/{owner}/{repo}/pulls/comments/{comment_id}/reactions/{reaction_id}": Operation<
     "/repos/{owner}/{repo}/pulls/comments/{comment_id}/reactions/{reaction_id}",
@@ -930,7 +796,7 @@ export interface Endpoints {
     "delete"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/repos/#disable-vulnerability-alerts
+   * @see https://docs.github.com/rest/reference/repos#disable-vulnerability-alerts
    */
   "DELETE /repos/{owner}/{repo}/vulnerability-alerts": Operation<
     "/repos/{owner}/{repo}/vulnerability-alerts",
@@ -959,7 +825,7 @@ export interface Endpoints {
     "delete"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/scim/#delete-a-scim-user-from-an-organization
+   * @see https://docs.github.com/rest/reference/scim#delete-a-scim-user-from-an-organization
    */
   "DELETE /scim/v2/organizations/{org}/Users/{scim_user_id}": Operation<
     "/scim/v2/organizations/{org}/Users/{scim_user_id}",
@@ -1099,11 +965,11 @@ export interface Endpoints {
     "delete"
   >;
   /**
-   * @see
+   * @see https://docs.github.com/rest/overview/resources-in-the-rest-api#root-endpoint
    */
   "GET /": Operation<"/", "get">;
   /**
-   * @see https://docs.github.com/rest/reference/apps/#get-the-authenticated-app
+   * @see https://docs.github.com/rest/reference/apps#get-the-authenticated-app
    */
   "GET /app": Operation<"/app", "get">;
   /**
@@ -1111,11 +977,22 @@ export interface Endpoints {
    */
   "GET /app/hook/config": Operation<"/app/hook/config", "get">;
   /**
-   * @see https://docs.github.com/rest/reference/apps/#list-installations-for-the-authenticated-app
+   * @see https://docs.github.com/rest/reference/apps#list-deliveries-for-an-app-webhook
+   */
+  "GET /app/hook/deliveries": Operation<"/app/hook/deliveries", "get">;
+  /**
+   * @see https://docs.github.com/rest/reference/apps#get-a-delivery-for-an-app-webhook
+   */
+  "GET /app/hook/deliveries/{delivery_id}": Operation<
+    "/app/hook/deliveries/{delivery_id}",
+    "get"
+  >;
+  /**
+   * @see https://docs.github.com/rest/reference/apps#list-installations-for-the-authenticated-app
    */
   "GET /app/installations": Operation<"/app/installations", "get">;
   /**
-   * @see https://docs.github.com/rest/reference/apps/#get-an-installation-for-the-authenticated-app
+   * @see https://docs.github.com/rest/reference/apps#get-an-installation-for-the-authenticated-app
    */
   "GET /app/installations/{installation_id}": Operation<
     "/app/installations/{installation_id}",
@@ -1155,23 +1032,15 @@ export interface Endpoints {
     "get"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/codes_of_conduct/#get-all-codes-of-conduct
+   * @see https://docs.github.com/rest/reference/codes-of-conduct#get-all-codes-of-conduct
    */
-  "GET /codes_of_conduct": Operation<
-    "/codes_of_conduct",
-    "get",
-    "scarlet-witch"
-  >;
+  "GET /codes_of_conduct": Operation<"/codes_of_conduct", "get">;
   /**
-   * @see https://docs.github.com/rest/reference/codes_of_conduct/#get-a-code-of-conduct
+   * @see https://docs.github.com/rest/reference/codes-of-conduct#get-a-code-of-conduct
    */
-  "GET /codes_of_conduct/{key}": Operation<
-    "/codes_of_conduct/{key}",
-    "get",
-    "scarlet-witch"
-  >;
+  "GET /codes_of_conduct/{key}": Operation<"/codes_of_conduct/{key}", "get">;
   /**
-   * @see https://docs.github.com/rest/reference/emojis/#get-emojis
+   * @see https://docs.github.com/rest/reference/emojis#get-emojis
    */
   "GET /emojis": Operation<"/emojis", "get">;
   /**
@@ -1252,21 +1121,21 @@ export interface Endpoints {
     "get"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/billing/#get-github-actions-billing-for-an-enterprise
+   * @see https://docs.github.com/rest/reference/billing#get-github-actions-billing-for-an-enterprise
    */
   "GET /enterprises/{enterprise}/settings/billing/actions": Operation<
     "/enterprises/{enterprise}/settings/billing/actions",
     "get"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/billing/#get-github-packages-billing-for-an-enterprise
+   * @see https://docs.github.com/rest/reference/billing#get-github-packages-billing-for-an-enterprise
    */
   "GET /enterprises/{enterprise}/settings/billing/packages": Operation<
     "/enterprises/{enterprise}/settings/billing/packages",
     "get"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/billing/#get-shared-storage-billing-for-an-enterprise
+   * @see https://docs.github.com/rest/reference/billing#get-shared-storage-billing-for-an-enterprise
    */
   "GET /enterprises/{enterprise}/settings/billing/shared-storage": Operation<
     "/enterprises/{enterprise}/settings/billing/shared-storage",
@@ -1281,19 +1150,19 @@ export interface Endpoints {
    */
   "GET /feeds": Operation<"/feeds", "get">;
   /**
-   * @see https://docs.github.com/rest/reference/gists/#list-gists-for-the-authenticated-user
+   * @see https://docs.github.com/rest/reference/gists#list-gists-for-the-authenticated-user
    */
   "GET /gists": Operation<"/gists", "get">;
   /**
-   * @see https://docs.github.com/rest/reference/gists/#list-public-gists
+   * @see https://docs.github.com/rest/reference/gists#list-public-gists
    */
   "GET /gists/public": Operation<"/gists/public", "get">;
   /**
-   * @see https://docs.github.com/rest/reference/gists/#list-starred-gists
+   * @see https://docs.github.com/rest/reference/gists#list-starred-gists
    */
   "GET /gists/starred": Operation<"/gists/starred", "get">;
   /**
-   * @see https://docs.github.com/rest/reference/gists/#get-a-gist
+   * @see https://docs.github.com/rest/reference/gists#get-a-gist
    */
   "GET /gists/{gist_id}": Operation<"/gists/{gist_id}", "get">;
   /**
@@ -1311,27 +1180,27 @@ export interface Endpoints {
     "get"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/gists/#list-gist-commits
+   * @see https://docs.github.com/rest/reference/gists#list-gist-commits
    */
   "GET /gists/{gist_id}/commits": Operation<"/gists/{gist_id}/commits", "get">;
   /**
-   * @see https://docs.github.com/rest/reference/gists/#list-gist-forks
+   * @see https://docs.github.com/rest/reference/gists#list-gist-forks
    */
   "GET /gists/{gist_id}/forks": Operation<"/gists/{gist_id}/forks", "get">;
   /**
-   * @see https://docs.github.com/rest/reference/gists/#check-if-a-gist-is-starred
+   * @see https://docs.github.com/rest/reference/gists#check-if-a-gist-is-starred
    */
   "GET /gists/{gist_id}/star": Operation<"/gists/{gist_id}/star", "get">;
   /**
-   * @see https://docs.github.com/rest/reference/gists/#get-a-gist-revision
+   * @see https://docs.github.com/rest/reference/gists#get-a-gist-revision
    */
   "GET /gists/{gist_id}/{sha}": Operation<"/gists/{gist_id}/{sha}", "get">;
   /**
-   * @see https://docs.github.com/rest/reference/gitignore/#get-all-gitignore-templates
+   * @see https://docs.github.com/rest/reference/gitignore#get-all-gitignore-templates
    */
   "GET /gitignore/templates": Operation<"/gitignore/templates", "get">;
   /**
-   * @see https://docs.github.com/rest/reference/gitignore/#get-a-gitignore-template
+   * @see https://docs.github.com/rest/reference/gitignore#get-a-gitignore-template
    */
   "GET /gitignore/templates/{name}": Operation<
     "/gitignore/templates/{name}",
@@ -1345,15 +1214,15 @@ export interface Endpoints {
     "get"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/issues/#list-issues-assigned-to-the-authenticated-user
+   * @see https://docs.github.com/rest/reference/issues#list-issues-assigned-to-the-authenticated-user
    */
   "GET /issues": Operation<"/issues", "get">;
   /**
-   * @see https://docs.github.com/rest/reference/licenses/#get-all-commonly-used-licenses
+   * @see https://docs.github.com/rest/reference/licenses#get-all-commonly-used-licenses
    */
   "GET /licenses": Operation<"/licenses", "get">;
   /**
-   * @see https://docs.github.com/rest/reference/licenses/#get-a-license
+   * @see https://docs.github.com/rest/reference/licenses#get-a-license
    */
   "GET /licenses/{license}": Operation<"/licenses/{license}", "get">;
   /**
@@ -1399,7 +1268,7 @@ export interface Endpoints {
     "get"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/meta/#get-github-meta-information
+   * @see https://docs.github.com/rest/reference/meta#get-github-meta-information
    */
   "GET /meta": Operation<"/meta", "get">;
   /**
@@ -1428,15 +1297,15 @@ export interface Endpoints {
     "get"
   >;
   /**
-   * @see
+   * @see https://docs.github.com/rest/reference/meta#get-octocat
    */
   "GET /octocat": Operation<"/octocat", "get">;
   /**
-   * @see https://docs.github.com/rest/reference/orgs/#list-organizations
+   * @see https://docs.github.com/rest/reference/orgs#list-organizations
    */
   "GET /organizations": Operation<"/organizations", "get">;
   /**
-   * @see https://docs.github.com/rest/reference/orgs/#get-an-organization
+   * @see https://docs.github.com/rest/reference/orgs#get-an-organization
    */
   "GET /orgs/{org}": Operation<"/orgs/{org}", "get">;
   /**
@@ -1538,7 +1407,7 @@ export interface Endpoints {
     "get"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/orgs#get-the-audit-log-for-an-organization
+   * @see https://docs.github.com/rest/reference/orgs#get-audit-log
    */
   "GET /orgs/{org}/audit-log": Operation<"/orgs/{org}/audit-log", "get">;
   /**
@@ -1553,7 +1422,7 @@ export interface Endpoints {
     "get"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/orgs/#list-saml-sso-authorizations-for-an-organization
+   * @see https://docs.github.com/rest/reference/orgs#list-saml-sso-authorizations-for-an-organization
    */
   "GET /orgs/{org}/credential-authorizations": Operation<
     "/orgs/{org}/credential-authorizations",
@@ -1589,11 +1458,25 @@ export interface Endpoints {
     "get"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/apps/#get-an-organization-installation-for-the-authenticated-app
+   * @see https://docs.github.com/rest/reference/orgs#list-deliveries-for-an-organization-webhook
+   */
+  "GET /orgs/{org}/hooks/{hook_id}/deliveries": Operation<
+    "/orgs/{org}/hooks/{hook_id}/deliveries",
+    "get"
+  >;
+  /**
+   * @see https://docs.github.com/rest/reference/orgs#get-a-webhook-delivery-for-an-organization-webhook
+   */
+  "GET /orgs/{org}/hooks/{hook_id}/deliveries/{delivery_id}": Operation<
+    "/orgs/{org}/hooks/{hook_id}/deliveries/{delivery_id}",
+    "get"
+  >;
+  /**
+   * @see https://docs.github.com/rest/reference/apps#get-an-organization-installation-for-the-authenticated-app
    */
   "GET /orgs/{org}/installation": Operation<"/orgs/{org}/installation", "get">;
   /**
-   * @see https://docs.github.com/rest/reference/orgs/#list-app-installations-for-an-organization
+   * @see https://docs.github.com/rest/reference/orgs#list-app-installations-for-an-organization
    */
   "GET /orgs/{org}/installations": Operation<
     "/orgs/{org}/installations",
@@ -1618,7 +1501,7 @@ export interface Endpoints {
     "get"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/issues/#list-organization-issues-assigned-to-the-authenticated-user
+   * @see https://docs.github.com/rest/reference/issues#list-organization-issues-assigned-to-the-authenticated-user
    */
   "GET /orgs/{org}/issues": Operation<"/orgs/{org}/issues", "get">;
   /**
@@ -1686,7 +1569,7 @@ export interface Endpoints {
     "get"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/packages#get-all-package-versions-for-a-package-owned-by-the-authenticated-user
+   * @see https://docs.github.com/rest/reference/packages#get-all-package-versions-for-a-package-owned-by-an-organization
    */
   "GET /orgs/{org}/packages/{package_type}/{package_name}/versions": Operation<
     "/orgs/{org}/packages/{package_type}/{package_name}/versions",
@@ -1700,7 +1583,7 @@ export interface Endpoints {
     "get"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/projects/#list-organization-projects
+   * @see https://docs.github.com/rest/reference/projects#list-organization-projects
    */
   "GET /orgs/{org}/projects": Operation<
     "/orgs/{org}/projects",
@@ -1722,25 +1605,25 @@ export interface Endpoints {
     "get"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/repos/#list-organization-repositories
+   * @see https://docs.github.com/rest/reference/repos#list-organization-repositories
    */
   "GET /orgs/{org}/repos": Operation<"/orgs/{org}/repos", "get">;
   /**
-   * @see https://docs.github.com/rest/reference/billing/#get-github-actions-billing-for-an-organization
+   * @see https://docs.github.com/rest/reference/billing#get-github-actions-billing-for-an-organization
    */
   "GET /orgs/{org}/settings/billing/actions": Operation<
     "/orgs/{org}/settings/billing/actions",
     "get"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/billing/#get-github-packages-billing-for-an-organization
+   * @see https://docs.github.com/rest/reference/billing#get-github-packages-billing-for-an-organization
    */
   "GET /orgs/{org}/settings/billing/packages": Operation<
     "/orgs/{org}/settings/billing/packages",
     "get"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/billing/#get-shared-storage-billing-for-an-organization
+   * @see https://docs.github.com/rest/reference/billing#get-shared-storage-billing-for-an-organization
    */
   "GET /orgs/{org}/settings/billing/shared-storage": Operation<
     "/orgs/{org}/settings/billing/shared-storage",
@@ -1754,11 +1637,11 @@ export interface Endpoints {
     "get"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/teams/#list-teams
+   * @see https://docs.github.com/rest/reference/teams#list-teams
    */
   "GET /orgs/{org}/teams": Operation<"/orgs/{org}/teams", "get">;
   /**
-   * @see https://docs.github.com/rest/reference/teams/#get-a-team-by-name
+   * @see https://docs.github.com/rest/reference/teams#get-a-team-by-name
    */
   "GET /orgs/{org}/teams/{team_slug}": Operation<
     "/orgs/{org}/teams/{team_slug}",
@@ -1793,7 +1676,7 @@ export interface Endpoints {
     "get"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/reactions/#list-reactions-for-a-team-discussion-comment
+   * @see https://docs.github.com/rest/reference/reactions#list-reactions-for-a-team-discussion-comment
    */
   "GET /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/comments/{comment_number}/reactions": Operation<
     "/orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/comments/{comment_number}/reactions",
@@ -1801,7 +1684,7 @@ export interface Endpoints {
     "squirrel-girl"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/reactions/#list-reactions-for-a-team-discussion
+   * @see https://docs.github.com/rest/reference/reactions#list-reactions-for-a-team-discussion
    */
   "GET /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/reactions": Operation<
     "/orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/reactions",
@@ -1830,7 +1713,7 @@ export interface Endpoints {
     "get"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/teams/#list-team-projects
+   * @see https://docs.github.com/rest/reference/teams#list-team-projects
    */
   "GET /orgs/{org}/teams/{team_slug}/projects": Operation<
     "/orgs/{org}/teams/{team_slug}/projects",
@@ -1838,7 +1721,7 @@ export interface Endpoints {
     "inertia"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/teams/#check-team-permissions-for-a-project
+   * @see https://docs.github.com/rest/reference/teams#check-team-permissions-for-a-project
    */
   "GET /orgs/{org}/teams/{team_slug}/projects/{project_id}": Operation<
     "/orgs/{org}/teams/{team_slug}/projects/{project_id}",
@@ -1846,7 +1729,7 @@ export interface Endpoints {
     "inertia"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/teams/#list-team-repositories
+   * @see https://docs.github.com/rest/reference/teams#list-team-repositories
    */
   "GET /orgs/{org}/teams/{team_slug}/repos": Operation<
     "/orgs/{org}/teams/{team_slug}/repos",
@@ -1867,7 +1750,7 @@ export interface Endpoints {
     "get"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/teams/#list-child-teams
+   * @see https://docs.github.com/rest/reference/teams#list-child-teams
    */
   "GET /orgs/{org}/teams/{team_slug}/teams": Operation<
     "/orgs/{org}/teams/{team_slug}/teams",
@@ -1898,7 +1781,7 @@ export interface Endpoints {
     "inertia"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/projects/#get-a-project
+   * @see https://docs.github.com/rest/reference/projects#get-a-project
    */
   "GET /projects/{project_id}": Operation<
     "/projects/{project_id}",
@@ -1930,11 +1813,11 @@ export interface Endpoints {
     "inertia"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/rate_limit/#get-rate-limit-status-for-the-authenticated-user
+   * @see https://docs.github.com/rest/reference/rate-limit#get-rate-limit-status-for-the-authenticated-user
    */
   "GET /rate_limit": Operation<"/rate_limit", "get">;
   /**
-   * @see https://docs.github.com/rest/reference/repos/#get-a-repository
+   * @see https://docs.github.com/rest/reference/repos#get-a-repository
    */
   "GET /repos/{owner}/{repo}": Operation<"/repos/{owner}/{repo}", "get">;
   /**
@@ -2283,7 +2166,7 @@ export interface Endpoints {
     "get"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/code-scanning#get-information-about-a-sarif-upload
+   * @see https://docs.github.com/rest/reference/code-scanning#list-recent-code-scanning-analyses-for-a-repository
    */
   "GET /repos/{owner}/{repo}/code-scanning/sarifs/{sarif_id}": Operation<
     "/repos/{owner}/{repo}/code-scanning/sarifs/{sarif_id}",
@@ -2325,7 +2208,7 @@ export interface Endpoints {
     "get"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/reactions/#list-reactions-for-a-commit-comment
+   * @see https://docs.github.com/rest/reference/reactions#list-reactions-for-a-commit-comment
    */
   "GET /repos/{owner}/{repo}/comments/{comment_id}/reactions": Operation<
     "/repos/{owner}/{repo}/comments/{comment_id}/reactions",
@@ -2398,7 +2281,7 @@ export interface Endpoints {
     "get"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/codes_of_conduct/#get-the-code-of-conduct-for-a-repository
+   * @see https://docs.github.com/rest/reference/codes-of-conduct#get-the-code-of-conduct-for-a-repository
    */
   "GET /repos/{owner}/{repo}/community/code_of_conduct": Operation<
     "/repos/{owner}/{repo}/community/code_of_conduct",
@@ -2410,6 +2293,13 @@ export interface Endpoints {
    */
   "GET /repos/{owner}/{repo}/community/profile": Operation<
     "/repos/{owner}/{repo}/community/profile",
+    "get"
+  >;
+  /**
+   * @see https://docs.github.com/rest/reference/repos#compare-two-commits
+   */
+  "GET /repos/{owner}/{repo}/compare/{basehead}": Operation<
+    "/repos/{owner}/{repo}/compare/{basehead}",
     "get"
   >;
   /**
@@ -2427,7 +2317,7 @@ export interface Endpoints {
     "get"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/repos/#list-repository-contributors
+   * @see https://docs.github.com/rest/reference/repos#list-repository-contributors
    */
   "GET /repos/{owner}/{repo}/contributors": Operation<
     "/repos/{owner}/{repo}/contributors",
@@ -2553,6 +2443,20 @@ export interface Endpoints {
     "get"
   >;
   /**
+   * @see https://docs.github.com/rest/reference/repos#list-deliveries-for-a-repository-webhook
+   */
+  "GET /repos/{owner}/{repo}/hooks/{hook_id}/deliveries": Operation<
+    "/repos/{owner}/{repo}/hooks/{hook_id}/deliveries",
+    "get"
+  >;
+  /**
+   * @see https://docs.github.com/rest/reference/repos#get-a-delivery-for-a-repository-webhook
+   */
+  "GET /repos/{owner}/{repo}/hooks/{hook_id}/deliveries/{delivery_id}": Operation<
+    "/repos/{owner}/{repo}/hooks/{hook_id}/deliveries/{delivery_id}",
+    "get"
+  >;
+  /**
    * @see https://docs.github.com/rest/reference/migrations#get-an-import-status
    */
   "GET /repos/{owner}/{repo}/import": Operation<
@@ -2574,7 +2478,7 @@ export interface Endpoints {
     "get"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/apps/#get-a-repository-installation-for-the-authenticated-app
+   * @see https://docs.github.com/rest/reference/apps#get-a-repository-installation-for-the-authenticated-app
    */
   "GET /repos/{owner}/{repo}/installation": Operation<
     "/repos/{owner}/{repo}/installation",
@@ -2595,7 +2499,7 @@ export interface Endpoints {
     "get"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/issues/#list-repository-issues
+   * @see https://docs.github.com/rest/reference/issues#list-repository-issues
    */
   "GET /repos/{owner}/{repo}/issues": Operation<
     "/repos/{owner}/{repo}/issues",
@@ -2616,7 +2520,7 @@ export interface Endpoints {
     "get"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/reactions/#list-reactions-for-an-issue-comment
+   * @see https://docs.github.com/rest/reference/reactions#list-reactions-for-an-issue-comment
    */
   "GET /repos/{owner}/{repo}/issues/comments/{comment_id}/reactions": Operation<
     "/repos/{owner}/{repo}/issues/comments/{comment_id}/reactions",
@@ -2638,7 +2542,7 @@ export interface Endpoints {
     "get"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/issues/#get-an-issue
+   * @see https://docs.github.com/rest/reference/issues#get-an-issue
    */
   "GET /repos/{owner}/{repo}/issues/{issue_number}": Operation<
     "/repos/{owner}/{repo}/issues/{issue_number}",
@@ -2666,7 +2570,7 @@ export interface Endpoints {
     "get"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/reactions/#list-reactions-for-an-issue
+   * @see https://docs.github.com/rest/reference/reactions#list-reactions-for-an-issue
    */
   "GET /repos/{owner}/{repo}/issues/{issue_number}/reactions": Operation<
     "/repos/{owner}/{repo}/issues/{issue_number}/reactions",
@@ -2710,7 +2614,7 @@ export interface Endpoints {
     "get"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/repos/#list-repository-languages
+   * @see https://docs.github.com/rest/reference/repos#list-repository-languages
    */
   "GET /repos/{owner}/{repo}/languages": Operation<
     "/repos/{owner}/{repo}/languages",
@@ -2780,7 +2684,14 @@ export interface Endpoints {
     "get"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/projects/#list-repository-projects
+   * @see https://docs.github.com/rest/reference/repos#get-a-dns-health-check-for-github-pages
+   */
+  "GET /repos/{owner}/{repo}/pages/health": Operation<
+    "/repos/{owner}/{repo}/pages/health",
+    "get"
+  >;
+  /**
+   * @see https://docs.github.com/rest/reference/projects#list-repository-projects
    */
   "GET /repos/{owner}/{repo}/projects": Operation<
     "/repos/{owner}/{repo}/projects",
@@ -2788,7 +2699,7 @@ export interface Endpoints {
     "inertia"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/pulls/#list-pull-requests
+   * @see https://docs.github.com/rest/reference/pulls#list-pull-requests
    */
   "GET /repos/{owner}/{repo}/pulls": Operation<
     "/repos/{owner}/{repo}/pulls",
@@ -2809,7 +2720,7 @@ export interface Endpoints {
     "get"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/reactions/#list-reactions-for-a-pull-request-review-comment
+   * @see https://docs.github.com/rest/reference/reactions#list-reactions-for-a-pull-request-review-comment
    */
   "GET /repos/{owner}/{repo}/pulls/comments/{comment_id}/reactions": Operation<
     "/repos/{owner}/{repo}/pulls/comments/{comment_id}/reactions",
@@ -2817,7 +2728,7 @@ export interface Endpoints {
     "squirrel-girl"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/pulls/#get-a-pull-request
+   * @see https://docs.github.com/rest/reference/pulls#get-a-pull-request
    */
   "GET /repos/{owner}/{repo}/pulls/{pull_number}": Operation<
     "/repos/{owner}/{repo}/pulls/{pull_number}",
@@ -2831,21 +2742,21 @@ export interface Endpoints {
     "get"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/pulls/#list-commits-on-a-pull-request
+   * @see https://docs.github.com/rest/reference/pulls#list-commits-on-a-pull-request
    */
   "GET /repos/{owner}/{repo}/pulls/{pull_number}/commits": Operation<
     "/repos/{owner}/{repo}/pulls/{pull_number}/commits",
     "get"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/pulls/#list-pull-requests-files
+   * @see https://docs.github.com/rest/reference/pulls#list-pull-requests-files
    */
   "GET /repos/{owner}/{repo}/pulls/{pull_number}/files": Operation<
     "/repos/{owner}/{repo}/pulls/{pull_number}/files",
     "get"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/pulls/#check-if-a-pull-request-has-been-merged
+   * @see https://docs.github.com/rest/reference/pulls#check-if-a-pull-request-has-been-merged
    */
   "GET /repos/{owner}/{repo}/pulls/{pull_number}/merge": Operation<
     "/repos/{owner}/{repo}/pulls/{pull_number}/merge",
@@ -3006,7 +2917,7 @@ export interface Endpoints {
     "get"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/repos/#list-repository-tags
+   * @see https://docs.github.com/rest/reference/repos#list-repository-tags
    */
   "GET /repos/{owner}/{repo}/tags": Operation<
     "/repos/{owner}/{repo}/tags",
@@ -3020,14 +2931,14 @@ export interface Endpoints {
     "get"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/repos/#list-repository-teams
+   * @see https://docs.github.com/rest/reference/repos#list-repository-teams
    */
   "GET /repos/{owner}/{repo}/teams": Operation<
     "/repos/{owner}/{repo}/teams",
     "get"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/repos/#get-all-repository-topics
+   * @see https://docs.github.com/rest/reference/repos#get-all-repository-topics
    */
   "GET /repos/{owner}/{repo}/topics": Operation<
     "/repos/{owner}/{repo}/topics",
@@ -3063,7 +2974,7 @@ export interface Endpoints {
     "get"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/repos/#check-if-vulnerability-alerts-are-enabled-for-a-repository
+   * @see https://docs.github.com/rest/reference/repos#check-if-vulnerability-alerts-are-enabled-for-a-repository
    */
   "GET /repos/{owner}/{repo}/vulnerability-alerts": Operation<
     "/repos/{owner}/{repo}/vulnerability-alerts",
@@ -3078,7 +2989,7 @@ export interface Endpoints {
     "get"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/repos/#list-public-repositories
+   * @see https://docs.github.com/rest/reference/repos#list-public-repositories
    */
   "GET /repositories": Operation<"/repositories", "get">;
   /**
@@ -3131,45 +3042,45 @@ export interface Endpoints {
     "get"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/scim/#list-scim-provisioned-identities
+   * @see https://docs.github.com/rest/reference/scim#list-scim-provisioned-identities
    */
   "GET /scim/v2/organizations/{org}/Users": Operation<
     "/scim/v2/organizations/{org}/Users",
     "get"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/scim/#get-scim-provisioning-information-for-a-user
+   * @see https://docs.github.com/rest/reference/scim#get-scim-provisioning-information-for-a-user
    */
   "GET /scim/v2/organizations/{org}/Users/{scim_user_id}": Operation<
     "/scim/v2/organizations/{org}/Users/{scim_user_id}",
     "get"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/search/#search-code
+   * @see https://docs.github.com/rest/reference/search#search-code
    */
   "GET /search/code": Operation<"/search/code", "get">;
   /**
-   * @see https://docs.github.com/rest/reference/search/#search-commits
+   * @see https://docs.github.com/rest/reference/search#search-commits
    */
   "GET /search/commits": Operation<"/search/commits", "get", "cloak">;
   /**
-   * @see https://docs.github.com/rest/reference/search/#search-issues-and-pull-requests
+   * @see https://docs.github.com/rest/reference/search#search-issues-and-pull-requests
    */
   "GET /search/issues": Operation<"/search/issues", "get">;
   /**
-   * @see https://docs.github.com/rest/reference/search/#search-labels
+   * @see https://docs.github.com/rest/reference/search#search-labels
    */
   "GET /search/labels": Operation<"/search/labels", "get">;
   /**
-   * @see https://docs.github.com/rest/reference/search/#search-repositories
+   * @see https://docs.github.com/rest/reference/search#search-repositories
    */
   "GET /search/repositories": Operation<"/search/repositories", "get">;
   /**
-   * @see https://docs.github.com/rest/reference/search/#search-topics
+   * @see https://docs.github.com/rest/reference/search#search-topics
    */
   "GET /search/topics": Operation<"/search/topics", "get", "mercy">;
   /**
-   * @see https://docs.github.com/rest/reference/search/#search-users
+   * @see https://docs.github.com/rest/reference/search#search-users
    */
   "GET /search/users": Operation<"/search/users", "get">;
   /**
@@ -3284,7 +3195,7 @@ export interface Endpoints {
    */
   "GET /teams/{team_id}/teams": Operation<"/teams/{team_id}/teams", "get">;
   /**
-   * @see https://docs.github.com/rest/reference/users/#get-the-authenticated-user
+   * @see https://docs.github.com/rest/reference/users#get-the-authenticated-user
    */
   "GET /user": Operation<"/user", "get">;
   /**
@@ -3341,7 +3252,7 @@ export interface Endpoints {
    */
   "GET /user/interaction-limits": Operation<"/user/interaction-limits", "get">;
   /**
-   * @see https://docs.github.com/rest/reference/issues/#list-user-account-issues-assigned-to-the-authenticated-user
+   * @see https://docs.github.com/rest/reference/issues#list-user-account-issues-assigned-to-the-authenticated-user
    */
   "GET /user/issues": Operation<"/user/issues", "get">;
   /**
@@ -3406,7 +3317,7 @@ export interface Endpoints {
     "wyandotte"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/orgs/#list-organizations-for-the-authenticated-user
+   * @see https://docs.github.com/rest/reference/orgs#list-organizations-for-the-authenticated-user
    */
   "GET /user/orgs": Operation<"/user/orgs", "get">;
   /**
@@ -3435,7 +3346,7 @@ export interface Endpoints {
    */
   "GET /user/public_emails": Operation<"/user/public_emails", "get">;
   /**
-   * @see https://docs.github.com/rest/reference/repos/#list-repositories-for-the-authenticated-user
+   * @see https://docs.github.com/rest/reference/repos#list-repositories-for-the-authenticated-user
    */
   "GET /user/repos": Operation<"/user/repos", "get">;
   /**
@@ -3461,15 +3372,15 @@ export interface Endpoints {
    */
   "GET /user/subscriptions": Operation<"/user/subscriptions", "get">;
   /**
-   * @see https://docs.github.com/rest/reference/teams/#list-teams-for-the-authenticated-user
+   * @see https://docs.github.com/rest/reference/teams#list-teams-for-the-authenticated-user
    */
   "GET /user/teams": Operation<"/user/teams", "get">;
   /**
-   * @see https://docs.github.com/rest/reference/users/#list-users
+   * @see https://docs.github.com/rest/reference/users#list-users
    */
   "GET /users": Operation<"/users", "get">;
   /**
-   * @see https://docs.github.com/rest/reference/users/#get-a-user
+   * @see https://docs.github.com/rest/reference/users#get-a-user
    */
   "GET /users/{username}": Operation<"/users/{username}", "get">;
   /**
@@ -3512,7 +3423,7 @@ export interface Endpoints {
     "get"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/gists/#list-gists-for-a-user
+   * @see https://docs.github.com/rest/reference/gists#list-gists-for-a-user
    */
   "GET /users/{username}/gists": Operation<"/users/{username}/gists", "get">;
   /**
@@ -3523,14 +3434,14 @@ export interface Endpoints {
     "get"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/users/#get-contextual-information-for-a-user
+   * @see https://docs.github.com/rest/reference/users#get-contextual-information-for-a-user
    */
   "GET /users/{username}/hovercard": Operation<
     "/users/{username}/hovercard",
     "get"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/apps/#get-a-user-installation-for-the-authenticated-app
+   * @see https://docs.github.com/rest/reference/apps#get-a-user-installation-for-the-authenticated-app
    */
   "GET /users/{username}/installation": Operation<
     "/users/{username}/installation",
@@ -3541,7 +3452,7 @@ export interface Endpoints {
    */
   "GET /users/{username}/keys": Operation<"/users/{username}/keys", "get">;
   /**
-   * @see https://docs.github.com/rest/reference/orgs/#list-organizations-for-a-user
+   * @see https://docs.github.com/rest/reference/orgs#list-organizations-for-a-user
    */
   "GET /users/{username}/orgs": Operation<"/users/{username}/orgs", "get">;
   /**
@@ -3566,7 +3477,7 @@ export interface Endpoints {
     "get"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/projects/#list-user-projects
+   * @see https://docs.github.com/rest/reference/projects#list-user-projects
    */
   "GET /users/{username}/projects": Operation<
     "/users/{username}/projects",
@@ -3588,25 +3499,25 @@ export interface Endpoints {
     "get"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/repos/#list-repositories-for-a-user
+   * @see https://docs.github.com/rest/reference/repos#list-repositories-for-a-user
    */
   "GET /users/{username}/repos": Operation<"/users/{username}/repos", "get">;
   /**
-   * @see https://docs.github.com/rest/reference/billing/#get-github-actions-billing-for-a-user
+   * @see https://docs.github.com/rest/reference/billing#get-github-actions-billing-for-a-user
    */
   "GET /users/{username}/settings/billing/actions": Operation<
     "/users/{username}/settings/billing/actions",
     "get"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/billing/#get-github-packages-billing-for-a-user
+   * @see https://docs.github.com/rest/reference/billing#get-github-packages-billing-for-a-user
    */
   "GET /users/{username}/settings/billing/packages": Operation<
     "/users/{username}/settings/billing/packages",
     "get"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/billing/#get-shared-storage-billing-for-a-user
+   * @see https://docs.github.com/rest/reference/billing#get-shared-storage-billing-for-a-user
    */
   "GET /users/{username}/settings/billing/shared-storage": Operation<
     "/users/{username}/settings/billing/shared-storage",
@@ -3699,7 +3610,7 @@ export interface Endpoints {
     "patch"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/teams/#update-a-team
+   * @see https://docs.github.com/rest/reference/teams#update-a-team
    */
   "PATCH /orgs/{org}/teams/{team_slug}": Operation<
     "/orgs/{org}/teams/{team_slug}",
@@ -3743,7 +3654,7 @@ export interface Endpoints {
     "inertia"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/projects/#update-a-project
+   * @see https://docs.github.com/rest/reference/projects#update-a-project
    */
   "PATCH /projects/{project_id}": Operation<
     "/projects/{project_id}",
@@ -3923,7 +3834,7 @@ export interface Endpoints {
     "patch"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/scim/#update-an-attribute-for-a-scim-user
+   * @see https://docs.github.com/rest/reference/scim#update-an-attribute-for-a-scim-user
    */
   "PATCH /scim/v2/organizations/{org}/Users/{scim_user_id}": Operation<
     "/scim/v2/organizations/{org}/Users/{scim_user_id}",
@@ -3977,10 +3888,17 @@ export interface Endpoints {
     "patch"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/apps/#create-a-github-app-from-a-manifest
+   * @see https://docs.github.com/rest/reference/apps#create-a-github-app-from-a-manifest
    */
   "POST /app-manifests/{code}/conversions": Operation<
     "/app-manifests/{code}/conversions",
+    "post"
+  >;
+  /**
+   * @see https://docs.github.com/rest/reference/apps#redeliver-a-delivery-for-an-app-webhook
+   */
+  "POST /app/hook/deliveries/{delivery_id}/attempts": Operation<
+    "/app/hook/deliveries/{delivery_id}/attempts",
     "post"
   >;
   /**
@@ -4045,7 +3963,7 @@ export interface Endpoints {
     "post"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/gists/#create-a-gist
+   * @see https://docs.github.com/rest/reference/gists#create-a-gist
    */
   "POST /gists": Operation<"/gists", "post">;
   /**
@@ -4056,15 +3974,15 @@ export interface Endpoints {
     "post"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/gists/#fork-a-gist
+   * @see https://docs.github.com/rest/reference/gists#fork-a-gist
    */
   "POST /gists/{gist_id}/forks": Operation<"/gists/{gist_id}/forks", "post">;
   /**
-   * @see https://docs.github.com/rest/reference/markdown/#render-a-markdown-document
+   * @see https://docs.github.com/rest/reference/markdown#render-a-markdown-document
    */
   "POST /markdown": Operation<"/markdown", "post">;
   /**
-   * @see https://docs.github.com/rest/reference/markdown/#render-a-markdown-document-in-raw-mode
+   * @see https://docs.github.com/rest/reference/markdown#render-a-markdown-document-in-raw-mode
    */
   "POST /markdown/raw": Operation<"/markdown/raw", "post">;
   /**
@@ -4092,6 +4010,13 @@ export interface Endpoints {
    * @see https://docs.github.com/rest/reference/orgs#create-an-organization-webhook
    */
   "POST /orgs/{org}/hooks": Operation<"/orgs/{org}/hooks", "post">;
+  /**
+   * @see https://docs.github.com/rest/reference/orgs#redeliver-a-delivery-for-an-organization-webhook
+   */
+  "POST /orgs/{org}/hooks/{hook_id}/deliveries/{delivery_id}/attempts": Operation<
+    "/orgs/{org}/hooks/{hook_id}/deliveries/{delivery_id}/attempts",
+    "post"
+  >;
   /**
    * @see https://docs.github.com/rest/reference/orgs#ping-an-organization-webhook
    */
@@ -4122,7 +4047,7 @@ export interface Endpoints {
     "post"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/projects/#create-an-organization-project
+   * @see https://docs.github.com/rest/reference/projects#create-an-organization-project
    */
   "POST /orgs/{org}/projects": Operation<
     "/orgs/{org}/projects",
@@ -4130,11 +4055,11 @@ export interface Endpoints {
     "inertia"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/repos/#create-an-organization-repository
+   * @see https://docs.github.com/rest/reference/repos#create-an-organization-repository
    */
   "POST /orgs/{org}/repos": Operation<"/orgs/{org}/repos", "post">;
   /**
-   * @see https://docs.github.com/rest/reference/teams/#create-a-team
+   * @see https://docs.github.com/rest/reference/teams#create-a-team
    */
   "POST /orgs/{org}/teams": Operation<"/orgs/{org}/teams", "post">;
   /**
@@ -4152,7 +4077,7 @@ export interface Endpoints {
     "post"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/reactions/#create-reaction-for-a-team-discussion-comment
+   * @see https://docs.github.com/rest/reference/reactions#create-reaction-for-a-team-discussion-comment
    */
   "POST /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/comments/{comment_number}/reactions": Operation<
     "/orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/comments/{comment_number}/reactions",
@@ -4160,7 +4085,7 @@ export interface Endpoints {
     "squirrel-girl"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/reactions/#create-reaction-for-a-team-discussion
+   * @see https://docs.github.com/rest/reference/reactions#create-reaction-for-a-team-discussion
    */
   "POST /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/reactions": Operation<
     "/orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/reactions",
@@ -4211,6 +4136,13 @@ export interface Endpoints {
    */
   "POST /repos/{owner}/{repo}/actions/runners/remove-token": Operation<
     "/repos/{owner}/{repo}/actions/runners/remove-token",
+    "post"
+  >;
+  /**
+   * @see https://docs.github.com/rest/reference/actions#approve-a-workflow-run-for-a-fork-pull-request
+   */
+  "POST /repos/{owner}/{repo}/actions/runs/{run_id}/approve": Operation<
+    "/repos/{owner}/{repo}/actions/runs/{run_id}/approve",
     "post"
   >;
   /**
@@ -4313,14 +4245,14 @@ export interface Endpoints {
     "post"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/code-scanning#upload-an-analysis-as-sarif-data
+   * @see https://docs.github.com/rest/reference/code-scanning#upload-a-sarif-file
    */
   "POST /repos/{owner}/{repo}/code-scanning/sarifs": Operation<
     "/repos/{owner}/{repo}/code-scanning/sarifs",
     "post"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/reactions/#create-reaction-for-a-commit-comment
+   * @see https://docs.github.com/rest/reference/reactions#create-reaction-for-a-commit-comment
    */
   "POST /repos/{owner}/{repo}/comments/{comment_id}/reactions": Operation<
     "/repos/{owner}/{repo}/comments/{comment_id}/reactions",
@@ -4333,6 +4265,14 @@ export interface Endpoints {
   "POST /repos/{owner}/{repo}/commits/{commit_sha}/comments": Operation<
     "/repos/{owner}/{repo}/commits/{commit_sha}/comments",
     "post"
+  >;
+  /**
+   * @see https://docs.github.com/rest/reference/apps#create-a-content-attachment
+   */
+  "POST /repos/{owner}/{repo}/content_references/{content_reference_id}/attachments": Operation<
+    "/repos/{owner}/{repo}/content_references/{content_reference_id}/attachments",
+    "post",
+    "corsair"
   >;
   /**
    * @see https://docs.github.com/rest/reference/repos#create-a-deployment
@@ -4349,7 +4289,7 @@ export interface Endpoints {
     "post"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/repos/#create-a-repository-dispatch-event
+   * @see https://docs.github.com/rest/reference/repos#create-a-repository-dispatch-event
    */
   "POST /repos/{owner}/{repo}/dispatches": Operation<
     "/repos/{owner}/{repo}/dispatches",
@@ -4358,7 +4298,7 @@ export interface Endpoints {
   /**
    * @see https://docs.github.com/rest/reference/repos#create-a-fork
    */
-  "POST /repos/{owner}/{repo}/forks{?org,organization}": Operation<
+  "POST /repos/{owner}/{repo}/forks": Operation<
     "/repos/{owner}/{repo}/forks",
     "post"
   >;
@@ -4405,6 +4345,13 @@ export interface Endpoints {
     "post"
   >;
   /**
+   * @see https://docs.github.com/rest/reference/repos#redeliver-a-delivery-for-a-repository-webhook
+   */
+  "POST /repos/{owner}/{repo}/hooks/{hook_id}/deliveries/{delivery_id}/attempts": Operation<
+    "/repos/{owner}/{repo}/hooks/{hook_id}/deliveries/{delivery_id}/attempts",
+    "post"
+  >;
+  /**
    * @see https://docs.github.com/rest/reference/repos#ping-a-repository-webhook
    */
   "POST /repos/{owner}/{repo}/hooks/{hook_id}/pings": Operation<
@@ -4419,14 +4366,14 @@ export interface Endpoints {
     "post"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/issues/#create-an-issue
+   * @see https://docs.github.com/rest/reference/issues#create-an-issue
    */
   "POST /repos/{owner}/{repo}/issues": Operation<
     "/repos/{owner}/{repo}/issues",
     "post"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/reactions/#create-reaction-for-an-issue-comment
+   * @see https://docs.github.com/rest/reference/reactions#create-reaction-for-an-issue-comment
    */
   "POST /repos/{owner}/{repo}/issues/comments/{comment_id}/reactions": Operation<
     "/repos/{owner}/{repo}/issues/comments/{comment_id}/reactions",
@@ -4455,7 +4402,7 @@ export interface Endpoints {
     "post"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/reactions/#create-reaction-for-an-issue
+   * @see https://docs.github.com/rest/reference/reactions#create-reaction-for-an-issue
    */
   "POST /repos/{owner}/{repo}/issues/{issue_number}/reactions": Operation<
     "/repos/{owner}/{repo}/issues/{issue_number}/reactions",
@@ -4506,7 +4453,7 @@ export interface Endpoints {
     "post"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/projects/#create-a-repository-project
+   * @see https://docs.github.com/rest/reference/projects#create-a-repository-project
    */
   "POST /repos/{owner}/{repo}/projects": Operation<
     "/repos/{owner}/{repo}/projects",
@@ -4514,14 +4461,14 @@ export interface Endpoints {
     "inertia"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/pulls/#create-a-pull-request
+   * @see https://docs.github.com/rest/reference/pulls#create-a-pull-request
    */
   "POST /repos/{owner}/{repo}/pulls": Operation<
     "/repos/{owner}/{repo}/pulls",
     "post"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/reactions/#create-reaction-for-a-pull-request-review-comment
+   * @see https://docs.github.com/rest/reference/reactions#create-reaction-for-a-pull-request-review-comment
    */
   "POST /repos/{owner}/{repo}/pulls/comments/{comment_id}/reactions": Operation<
     "/repos/{owner}/{repo}/pulls/comments/{comment_id}/reactions",
@@ -4571,6 +4518,14 @@ export interface Endpoints {
     "post"
   >;
   /**
+   * @see https://docs.github.com/rest/reference/reactions/#create-reaction-for-a-release
+   */
+  "POST /repos/{owner}/{repo}/releases/{release_id}/reactions": Operation<
+    "/repos/{owner}/{repo}/releases/{release_id}/reactions",
+    "post",
+    "squirrel-girl"
+  >;
+  /**
    * @see https://docs.github.com/rest/reference/repos#create-a-commit-status
    */
   "POST /repos/{owner}/{repo}/statuses/{sha}": Operation<
@@ -4578,14 +4533,14 @@ export interface Endpoints {
     "post"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/repos/#transfer-a-repository
+   * @see https://docs.github.com/rest/reference/repos#transfer-a-repository
    */
   "POST /repos/{owner}/{repo}/transfer": Operation<
     "/repos/{owner}/{repo}/transfer",
     "post"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/repos/#create-a-repository-using-a-template
+   * @see https://docs.github.com/rest/reference/repos#create-a-repository-using-a-template
    */
   "POST /repos/{template_owner}/{template_repo}/generate": Operation<
     "/repos/{template_owner}/{template_repo}/generate",
@@ -4607,7 +4562,7 @@ export interface Endpoints {
     "post"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/scim/#provision-and-invite-a-scim-user
+   * @see https://docs.github.com/rest/reference/scim#provision-and-invite-a-scim-user
    */
   "POST /scim/v2/organizations/{org}/Users": Operation<
     "/scim/v2/organizations/{org}/Users",
@@ -4674,11 +4629,11 @@ export interface Endpoints {
     "post"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/projects/#create-a-user-project
+   * @see https://docs.github.com/rest/reference/projects#create-a-user-project
    */
   "POST /user/projects": Operation<"/user/projects", "post", "inertia">;
   /**
-   * @see https://docs.github.com/rest/reference/repos/#create-a-repository-for-the-authenticated-user
+   * @see https://docs.github.com/rest/reference/repos#create-a-repository-for-the-authenticated-user
    */
   "POST /user/repos": Operation<"/user/repos", "post">;
   /**
@@ -4689,7 +4644,7 @@ export interface Endpoints {
     "post"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/apps/#suspend-an-app-installation
+   * @see https://docs.github.com/rest/reference/apps#suspend-an-app-installation
    */
   "PUT /app/installations/{installation_id}/suspended": Operation<
     "/app/installations/{installation_id}/suspended",
@@ -4766,7 +4721,7 @@ export interface Endpoints {
     "put"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/gists/#star-a-gist
+   * @see https://docs.github.com/rest/reference/gists#star-a-gist
    */
   "PUT /gists/{gist_id}/star": Operation<"/gists/{gist_id}/star", "put">;
   /**
@@ -4900,7 +4855,7 @@ export interface Endpoints {
     "put"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/teams/#add-or-update-team-project-permissions
+   * @see https://docs.github.com/rest/reference/teams#add-or-update-team-project-permissions
    */
   "PUT /orgs/{org}/teams/{team_slug}/projects/{project_id}": Operation<
     "/orgs/{org}/teams/{team_slug}/projects/{project_id}",
@@ -4958,7 +4913,7 @@ export interface Endpoints {
     "put"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/repos/#enable-automated-security-fixes
+   * @see https://docs.github.com/rest/reference/repos#enable-automated-security-fixes
    */
   "PUT /repos/{owner}/{repo}/automated-security-fixes": Operation<
     "/repos/{owner}/{repo}/automated-security-fixes",
@@ -5043,7 +4998,7 @@ export interface Endpoints {
     "put"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/issues/#lock-an-issue
+   * @see https://docs.github.com/rest/reference/issues#lock-an-issue
    */
   "PUT /repos/{owner}/{repo}/issues/{issue_number}/lock": Operation<
     "/repos/{owner}/{repo}/issues/{issue_number}/lock",
@@ -5064,7 +5019,7 @@ export interface Endpoints {
     "put"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/pulls/#merge-a-pull-request
+   * @see https://docs.github.com/rest/reference/pulls#merge-a-pull-request
    */
   "PUT /repos/{owner}/{repo}/pulls/{pull_number}/merge": Operation<
     "/repos/{owner}/{repo}/pulls/{pull_number}/merge",
@@ -5085,7 +5040,7 @@ export interface Endpoints {
     "put"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/pulls/#update-a-pull-request-branch
+   * @see https://docs.github.com/rest/reference/pulls#update-a-pull-request-branch
    */
   "PUT /repos/{owner}/{repo}/pulls/{pull_number}/update-branch": Operation<
     "/repos/{owner}/{repo}/pulls/{pull_number}/update-branch",
@@ -5100,7 +5055,7 @@ export interface Endpoints {
     "put"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/repos/#replace-all-repository-topics
+   * @see https://docs.github.com/rest/reference/repos#replace-all-repository-topics
    */
   "PUT /repos/{owner}/{repo}/topics": Operation<
     "/repos/{owner}/{repo}/topics",
@@ -5108,7 +5063,7 @@ export interface Endpoints {
     "mercy"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/repos/#enable-vulnerability-alerts
+   * @see https://docs.github.com/rest/reference/repos#enable-vulnerability-alerts
    */
   "PUT /repos/{owner}/{repo}/vulnerability-alerts": Operation<
     "/repos/{owner}/{repo}/vulnerability-alerts",
@@ -5137,7 +5092,7 @@ export interface Endpoints {
     "put"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/scim/#set-scim-information-for-a-provisioned-user
+   * @see https://docs.github.com/rest/reference/scim#set-scim-information-for-a-provisioned-user
    */
   "PUT /scim/v2/organizations/{org}/Users/{scim_user_id}": Operation<
     "/scim/v2/organizations/{org}/Users/{scim_user_id}",
