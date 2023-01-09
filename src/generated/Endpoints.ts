@@ -120,13 +120,6 @@ export interface Endpoints {
     "delete"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/oauth-authorizations#delete-a-grant
-   */
-  "DELETE /applications/grants/{grant_id}": Operation<
-    "/applications/grants/{grant_id}",
-    "delete"
-  >;
-  /**
    * @see https://docs.github.com/rest/reference/apps#delete-an-app-authorization
    */
   "DELETE /applications/{client_id}/grant": Operation<
@@ -138,13 +131,6 @@ export interface Endpoints {
    */
   "DELETE /applications/{client_id}/token": Operation<
     "/applications/{client_id}/token",
-    "delete"
-  >;
-  /**
-   * @see https://docs.github.com/rest/reference/oauth-authorizations#delete-an-authorization
-   */
-  "DELETE /authorizations/{authorization_id}": Operation<
-    "/authorizations/{authorization_id}",
     "delete"
   >;
   /**
@@ -223,6 +209,20 @@ export interface Endpoints {
     "delete"
   >;
   /**
+   * @see https://docs.github.com/rest/reference/codespaces#delete-an-organization-secret
+   */
+  "DELETE /organizations/{org}/codespaces/secrets/{secret_name}": Operation<
+    "/organizations/{org}/codespaces/secrets/{secret_name}",
+    "delete"
+  >;
+  /**
+   * @see https://docs.github.com/rest/reference/codespaces#remove-selected-repository-from-an-organization-secret
+   */
+  "DELETE /organizations/{org}/codespaces/secrets/{secret_name}/repositories/{repository_id}": Operation<
+    "/organizations/{org}/codespaces/secrets/{secret_name}/repositories/{repository_id}",
+    "delete"
+  >;
+  /**
    * @see https://docs.github.com/rest/reference/actions#disable-a-selected-repository-for-github-actions-in-an-organization
    */
   "DELETE /orgs/{org}/actions/permissions/repositories/{repository_id}": Operation<
@@ -293,10 +293,10 @@ export interface Endpoints {
     "delete"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/orgs#remove-a-saml-sso-authorization-for-an-organization
+   * @see https://docs.github.com/rest/reference/orgs#delete-a-custom-role
    */
-  "DELETE /orgs/{org}/credential-authorizations/{credential_id}": Operation<
-    "/orgs/{org}/credential-authorizations/{credential_id}",
+  "DELETE /orgs/{org}/custom_roles/{role_id}": Operation<
+    "/orgs/{org}/custom_roles/{role_id}",
     "delete"
   >;
   /**
@@ -398,6 +398,13 @@ export interface Endpoints {
     "delete"
   >;
   /**
+   * @see https://docs.github.com/rest/reference/orgs#remove-a-security-manager-team
+   */
+  "DELETE /orgs/{org}/security-managers/teams/{team_slug}": Operation<
+    "/orgs/{org}/security-managers/teams/{team_slug}",
+    "delete"
+  >;
+  /**
    * @see https://docs.github.com/rest/reference/teams#delete-a-team
    */
   "DELETE /orgs/{org}/teams/{team_slug}": Operation<
@@ -430,13 +437,6 @@ export interface Endpoints {
    */
   "DELETE /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/reactions/{reaction_id}": Operation<
     "/orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/reactions/{reaction_id}",
-    "delete"
-  >;
-  /**
-   * @see https://docs.github.com/rest/reference/teams#unlink-external-idp-group-team-connection
-   */
-  "DELETE /orgs/{org}/teams/{team_slug}/external-groups": Operation<
-    "/orgs/{org}/teams/{team_slug}/external-groups",
     "delete"
   >;
   /**
@@ -654,14 +654,14 @@ export interface Endpoints {
     "delete"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/repos#remove-a-repository-collaborator
+   * @see https://docs.github.com/rest/collaborators/collaborators#remove-a-repository-collaborator
    */
   "DELETE /repos/{owner}/{repo}/collaborators/{username}": Operation<
     "/repos/{owner}/{repo}/collaborators/{username}",
     "delete"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/repos#delete-a-commit-comment
+   * @see https://docs.github.com/rest/commits/comments#delete-a-commit-comment
    */
   "DELETE /repos/{owner}/{repo}/comments/{comment_id}": Operation<
     "/repos/{owner}/{repo}/comments/{comment_id}",
@@ -703,6 +703,13 @@ export interface Endpoints {
     "delete"
   >;
   /**
+   * @see https://docs.github.com/rest/deployments/branch-policies#delete-deployment-branch-policy
+   */
+  "DELETE /repos/{owner}/{repo}/environments/{environment_name}/deployment-branch-policies/{branch_policy_id}": Operation<
+    "/repos/{owner}/{repo}/environments/{environment_name}/deployment-branch-policies/{branch_policy_id}",
+    "delete"
+  >;
+  /**
    * @see https://docs.github.com/rest/reference/git#delete-a-reference
    */
   "DELETE /repos/{owner}/{repo}/git/refs/{ref}": Operation<
@@ -710,7 +717,7 @@ export interface Endpoints {
     "delete"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/repos#delete-a-repository-webhook
+   * @see https://docs.github.com/rest/webhooks/repos#delete-a-repository-webhook
    */
   "DELETE /repos/{owner}/{repo}/hooks/{hook_id}": Operation<
     "/repos/{owner}/{repo}/hooks/{hook_id}",
@@ -731,7 +738,7 @@ export interface Endpoints {
     "delete"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/repos#delete-a-repository-invitation
+   * @see https://docs.github.com/rest/collaborators/invitations#delete-a-repository-invitation
    */
   "DELETE /repos/{owner}/{repo}/invitations/{invitation_id}": Operation<
     "/repos/{owner}/{repo}/invitations/{invitation_id}",
@@ -815,7 +822,7 @@ export interface Endpoints {
     "delete"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/repos#delete-a-github-pages-site
+   * @see https://docs.github.com/rest/pages#delete-a-github-pages-site
    */
   "DELETE /repos/{owner}/{repo}/pages": Operation<
     "/repos/{owner}/{repo}/pages",
@@ -896,27 +903,6 @@ export interface Endpoints {
    */
   "DELETE /repositories/{repository_id}/environments/{environment_name}/secrets/{secret_name}": Operation<
     "/repositories/{repository_id}/environments/{environment_name}/secrets/{secret_name}",
-    "delete"
-  >;
-  /**
-   * @see https://docs.github.com/rest/reference/enterprise-admin#delete-a-scim-group-from-an-enterprise
-   */
-  "DELETE /scim/v2/enterprises/{enterprise}/Groups/{scim_group_id}": Operation<
-    "/scim/v2/enterprises/{enterprise}/Groups/{scim_group_id}",
-    "delete"
-  >;
-  /**
-   * @see https://docs.github.com/rest/reference/enterprise-admin#delete-a-scim-user-from-an-enterprise
-   */
-  "DELETE /scim/v2/enterprises/{enterprise}/Users/{scim_user_id}": Operation<
-    "/scim/v2/enterprises/{enterprise}/Users/{scim_user_id}",
-    "delete"
-  >;
-  /**
-   * @see https://docs.github.com/rest/reference/scim#delete-a-scim-user-from-an-organization
-   */
-  "DELETE /scim/v2/organizations/{org}/Users/{scim_user_id}": Operation<
-    "/scim/v2/organizations/{org}/Users/{scim_user_id}",
     "delete"
   >;
   /**
@@ -1058,10 +1044,17 @@ export interface Endpoints {
     "delete"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/repos#decline-a-repository-invitation
+   * @see https://docs.github.com/rest/collaborators/invitations#decline-a-repository-invitation
    */
   "DELETE /user/repository_invitations/{invitation_id}": Operation<
     "/user/repository_invitations/{invitation_id}",
+    "delete"
+  >;
+  /**
+   * @see https://docs.github.com/rest/reference/users#delete-a-ssh-signing-key-for-the-authenticated-user
+   */
+  "DELETE /user/ssh_signing_keys/{ssh_signing_key_id}": Operation<
+    "/user/ssh_signing_keys/{ssh_signing_key_id}",
     "delete"
   >;
   /**
@@ -1120,31 +1113,9 @@ export interface Endpoints {
     "get"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/oauth-authorizations#list-your-grants
-   */
-  "GET /applications/grants": Operation<"/applications/grants", "get">;
-  /**
-   * @see https://docs.github.com/rest/reference/oauth-authorizations#get-a-single-grant
-   */
-  "GET /applications/grants/{grant_id}": Operation<
-    "/applications/grants/{grant_id}",
-    "get"
-  >;
-  /**
    * @see https://docs.github.com/rest/reference/apps/#get-an-app
    */
   "GET /apps/{app_slug}": Operation<"/apps/{app_slug}", "get">;
-  /**
-   * @see https://docs.github.com/rest/reference/oauth-authorizations#list-your-authorizations
-   */
-  "GET /authorizations": Operation<"/authorizations", "get">;
-  /**
-   * @see https://docs.github.com/rest/reference/oauth-authorizations#get-a-single-authorization
-   */
-  "GET /authorizations/{authorization_id}": Operation<
-    "/authorizations/{authorization_id}",
-    "get"
-  >;
   /**
    * @see https://docs.github.com/rest/reference/codes-of-conduct#get-all-codes-of-conduct
    */
@@ -1256,10 +1227,10 @@ export interface Endpoints {
     "get"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/enterprise-admin#get-the-audit-log-for-an-enterprise
+   * @see https://docs.github.com/rest/reference/code-scanning#list-code-scanning-alerts-for-an-enterprise
    */
-  "GET /enterprises/{enterprise}/audit-log": Operation<
-    "/enterprises/{enterprise}/audit-log",
+  "GET /enterprises/{enterprise}/code-scanning/alerts": Operation<
+    "/enterprises/{enterprise}/code-scanning/alerts",
     "get"
   >;
   /**
@@ -1270,31 +1241,10 @@ export interface Endpoints {
     "get"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/billing#get-github-actions-billing-for-an-enterprise
-   */
-  "GET /enterprises/{enterprise}/settings/billing/actions": Operation<
-    "/enterprises/{enterprise}/settings/billing/actions",
-    "get"
-  >;
-  /**
    * @see https://docs.github.com/rest/reference/billing#export-advanced-security-active-committers-data-for-enterprise
    */
   "GET /enterprises/{enterprise}/settings/billing/advanced-security": Operation<
     "/enterprises/{enterprise}/settings/billing/advanced-security",
-    "get"
-  >;
-  /**
-   * @see https://docs.github.com/rest/reference/billing#get-github-packages-billing-for-an-enterprise
-   */
-  "GET /enterprises/{enterprise}/settings/billing/packages": Operation<
-    "/enterprises/{enterprise}/settings/billing/packages",
-    "get"
-  >;
-  /**
-   * @see https://docs.github.com/rest/reference/billing#get-shared-storage-billing-for-an-enterprise
-   */
-  "GET /enterprises/{enterprise}/settings/billing/shared-storage": Operation<
-    "/enterprises/{enterprise}/settings/billing/shared-storage",
     "get"
   >;
   /**
@@ -1468,6 +1418,34 @@ export interface Endpoints {
     "get"
   >;
   /**
+   * @see https://docs.github.com/rest/reference/codespaces#list-organization-secrets
+   */
+  "GET /organizations/{org}/codespaces/secrets": Operation<
+    "/organizations/{org}/codespaces/secrets",
+    "get"
+  >;
+  /**
+   * @see https://docs.github.com/rest/reference/codespaces#get-an-organization-public-key
+   */
+  "GET /organizations/{org}/codespaces/secrets/public-key": Operation<
+    "/organizations/{org}/codespaces/secrets/public-key",
+    "get"
+  >;
+  /**
+   * @see https://docs.github.com/rest/reference/codespaces#get-an-organization-secret
+   */
+  "GET /organizations/{org}/codespaces/secrets/{secret_name}": Operation<
+    "/organizations/{org}/codespaces/secrets/{secret_name}",
+    "get"
+  >;
+  /**
+   * @see https://docs.github.com/rest/reference/codespaces#list-selected-repositories-for-an-organization-secret
+   */
+  "GET /organizations/{org}/codespaces/secrets/{secret_name}/repositories": Operation<
+    "/organizations/{org}/codespaces/secrets/{secret_name}/repositories",
+    "get"
+  >;
+  /**
    * @see https://docs.github.com/rest/reference/codespaces#list-in-organization
    * @deprecated "org_id" is now "org"
    */
@@ -1488,13 +1466,6 @@ export interface Endpoints {
    */
   "GET /orgs/{org}/actions/cache/usage-by-repository": Operation<
     "/orgs/{org}/actions/cache/usage-by-repository",
-    "get"
-  >;
-  /**
-   * @see https://docs.github.com/rest/actions/oidc#get-the-customization-template-for-an-oidc-subject-claim-for-an-organization
-   */
-  "GET /orgs/{org}/actions/oidc/customization/sub": Operation<
-    "/orgs/{org}/actions/oidc/customization/sub",
     "get"
   >;
   /**
@@ -1610,10 +1581,6 @@ export interface Endpoints {
     "get"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/orgs#get-audit-log
-   */
-  "GET /orgs/{org}/audit-log": Operation<"/orgs/{org}/audit-log", "get">;
-  /**
    * @see https://docs.github.com/rest/reference/orgs#list-users-blocked-by-an-organization
    */
   "GET /orgs/{org}/blocks": Operation<"/orgs/{org}/blocks", "get">;
@@ -1635,13 +1602,6 @@ export interface Endpoints {
    * @see https://docs.github.com/rest/reference/codespaces#list-in-organization
    */
   "GET /orgs/{org}/codespaces": Operation<"/orgs/{org}/codespaces", "get">;
-  /**
-   * @see https://docs.github.com/rest/reference/orgs#list-saml-sso-authorizations-for-an-organization
-   */
-  "GET /orgs/{org}/credential-authorizations": Operation<
-    "/orgs/{org}/credential-authorizations",
-    "get"
-  >;
   /**
    * @see https://docs.github.com/rest/reference/dependabot#list-organization-secrets
    */
@@ -1675,24 +1635,17 @@ export interface Endpoints {
    */
   "GET /orgs/{org}/events": Operation<"/orgs/{org}/events", "get">;
   /**
-   * @see https://docs.github.com/rest/reference/teams#external-idp-group-info-for-an-organization
-   */
-  "GET /orgs/{org}/external-group/{group_id}": Operation<
-    "/orgs/{org}/external-group/{group_id}",
-    "get"
-  >;
-  /**
-   * @see https://docs.github.com/rest/reference/teams#list-external-idp-groups-for-an-organization
-   */
-  "GET /orgs/{org}/external-groups": Operation<
-    "/orgs/{org}/external-groups",
-    "get"
-  >;
-  /**
    * @see https://docs.github.com/rest/reference/orgs#list-failed-organization-invitations
    */
   "GET /orgs/{org}/failed_invitations": Operation<
     "/orgs/{org}/failed_invitations",
+    "get"
+  >;
+  /**
+   * @see https://docs.github.com/rest/reference/orgs#list-fine-grained-permissions-for-an-organization
+   */
+  "GET /orgs/{org}/fine_grained_permissions": Operation<
+    "/orgs/{org}/fine_grained_permissions",
     "get"
   >;
   /**
@@ -1822,7 +1775,7 @@ export interface Endpoints {
     "get"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/packages#get-all-package-versions-for-a-package-owned-by-an-organization
+   * @see https://docs.github.com/rest/packages#get-all-package-versions-for-a-package-owned-by-an-organization
    */
   "GET /orgs/{org}/packages/{package_type}/{package_name}/versions": Operation<
     "/orgs/{org}/packages/{package_type}/{package_name}/versions",
@@ -1865,6 +1818,13 @@ export interface Endpoints {
     "get"
   >;
   /**
+   * @see https://docs.github.com/rest/reference/orgs#list-security-manager-teams
+   */
+  "GET /orgs/{org}/security-managers": Operation<
+    "/orgs/{org}/security-managers",
+    "get"
+  >;
+  /**
    * @see https://docs.github.com/rest/reference/billing#get-github-actions-billing-for-an-organization
    */
   "GET /orgs/{org}/settings/billing/actions": Operation<
@@ -1890,13 +1850,6 @@ export interface Endpoints {
    */
   "GET /orgs/{org}/settings/billing/shared-storage": Operation<
     "/orgs/{org}/settings/billing/shared-storage",
-    "get"
-  >;
-  /**
-   * @see https://docs.github.com/rest/reference/teams#list-idp-groups-for-an-organization
-   */
-  "GET /orgs/{org}/team-sync/groups": Operation<
-    "/orgs/{org}/team-sync/groups",
     "get"
   >;
   /**
@@ -1953,13 +1906,6 @@ export interface Endpoints {
     "get"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/teams#list-external-idp-group-team-connection
-   */
-  "GET /orgs/{org}/teams/{team_slug}/external-groups": Operation<
-    "/orgs/{org}/teams/{team_slug}/external-groups",
-    "get"
-  >;
-  /**
    * @see https://docs.github.com/rest/reference/teams#list-pending-team-invitations
    */
   "GET /orgs/{org}/teams/{team_slug}/invitations": Operation<
@@ -2006,13 +1952,6 @@ export interface Endpoints {
    */
   "GET /orgs/{org}/teams/{team_slug}/repos/{owner}/{repo}": Operation<
     "/orgs/{org}/teams/{team_slug}/repos/{owner}/{repo}",
-    "get"
-  >;
-  /**
-   * @see https://docs.github.com/rest/reference/teams#list-idp-groups-for-a-team
-   */
-  "GET /orgs/{org}/teams/{team_slug}/team-sync/group-mappings": Operation<
-    "/orgs/{org}/teams/{team_slug}/team-sync/group-mappings",
     "get"
   >;
   /**
@@ -2123,13 +2062,6 @@ export interface Endpoints {
    */
   "GET /repos/{owner}/{repo}/actions/jobs/{job_id}/logs": Operation<
     "/repos/{owner}/{repo}/actions/jobs/{job_id}/logs",
-    "get"
-  >;
-  /**
-   * @see https://docs.github.com/rest/actions/oidc#get-the-opt-out-flag-of-an-oidc-subject-claim-customization-for-a-repository
-   */
-  "GET /repos/{owner}/{repo}/actions/oidc/customization/sub": Operation<
-    "/repos/{owner}/{repo}/actions/oidc/customization/sub",
     "get"
   >;
   /**
@@ -2498,6 +2430,20 @@ export interface Endpoints {
     "get"
   >;
   /**
+   * @see https://docs.github.com/rest/reference/code-scanning#list-codeql-databases
+   */
+  "GET /repos/{owner}/{repo}/code-scanning/codeql/databases": Operation<
+    "/repos/{owner}/{repo}/code-scanning/codeql/databases",
+    "get"
+  >;
+  /**
+   * @see https://docs.github.com/rest/reference/code-scanning#get-codeql-database
+   */
+  "GET /repos/{owner}/{repo}/code-scanning/codeql/databases/{language}": Operation<
+    "/repos/{owner}/{repo}/code-scanning/codeql/databases/{language}",
+    "get"
+  >;
+  /**
    * @see https://docs.github.com/rest/reference/code-scanning#list-recent-code-scanning-analyses-for-a-repository
    */
   "GET /repos/{owner}/{repo}/code-scanning/sarifs/{sarif_id}": Operation<
@@ -2533,6 +2479,13 @@ export interface Endpoints {
     "get"
   >;
   /**
+   * @see https://docs.github.com/rest/reference/codespaces#preview-attributes-for-a-new-codespace
+   */
+  "GET /repos/{owner}/{repo}/codespaces/new": Operation<
+    "/repos/{owner}/{repo}/codespaces/new",
+    "get"
+  >;
+  /**
    * @see https://docs.github.com/rest/reference/codespaces#list-repository-secrets
    */
   "GET /repos/{owner}/{repo}/codespaces/secrets": Operation<
@@ -2554,35 +2507,35 @@ export interface Endpoints {
     "get"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/repos#list-repository-collaborators
+   * @see https://docs.github.com/rest/collaborators/collaborators#list-repository-collaborators
    */
   "GET /repos/{owner}/{repo}/collaborators": Operation<
     "/repos/{owner}/{repo}/collaborators",
     "get"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/repos#check-if-a-user-is-a-repository-collaborator
+   * @see https://docs.github.com/rest/collaborators/collaborators#check-if-a-user-is-a-repository-collaborator
    */
   "GET /repos/{owner}/{repo}/collaborators/{username}": Operation<
     "/repos/{owner}/{repo}/collaborators/{username}",
     "get"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/repos#get-repository-permissions-for-a-user
+   * @see https://docs.github.com/rest/collaborators/collaborators#get-repository-permissions-for-a-user
    */
   "GET /repos/{owner}/{repo}/collaborators/{username}/permission": Operation<
     "/repos/{owner}/{repo}/collaborators/{username}/permission",
     "get"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/repos#list-commit-comments-for-a-repository
+   * @see https://docs.github.com/rest/commits/comments#list-commit-comments-for-a-repository
    */
   "GET /repos/{owner}/{repo}/comments": Operation<
     "/repos/{owner}/{repo}/comments",
     "get"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/repos#get-a-commit-comment
+   * @see https://docs.github.com/rest/commits/comments#get-a-commit-comment
    */
   "GET /repos/{owner}/{repo}/comments/{comment_id}": Operation<
     "/repos/{owner}/{repo}/comments/{comment_id}",
@@ -2596,35 +2549,35 @@ export interface Endpoints {
     "get"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/repos#list-commits
+   * @see https://docs.github.com/rest/commits/commits#list-commits
    */
   "GET /repos/{owner}/{repo}/commits": Operation<
     "/repos/{owner}/{repo}/commits",
     "get"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/repos#list-branches-for-head-commit
+   * @see https://docs.github.com/rest/commits/commits#list-branches-for-head-commit
    */
   "GET /repos/{owner}/{repo}/commits/{commit_sha}/branches-where-head": Operation<
     "/repos/{owner}/{repo}/commits/{commit_sha}/branches-where-head",
     "get"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/repos#list-commit-comments
+   * @see https://docs.github.com/rest/commits/comments#list-commit-comments
    */
   "GET /repos/{owner}/{repo}/commits/{commit_sha}/comments": Operation<
     "/repos/{owner}/{repo}/commits/{commit_sha}/comments",
     "get"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/repos#list-pull-requests-associated-with-a-commit
+   * @see https://docs.github.com/rest/commits/commits#list-pull-requests-associated-with-a-commit
    */
   "GET /repos/{owner}/{repo}/commits/{commit_sha}/pulls": Operation<
     "/repos/{owner}/{repo}/commits/{commit_sha}/pulls",
     "get"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/repos#get-a-commit
+   * @see https://docs.github.com/rest/commits/commits#get-a-commit
    */
   "GET /repos/{owner}/{repo}/commits/{ref}": Operation<
     "/repos/{owner}/{repo}/commits/{ref}",
@@ -2645,28 +2598,28 @@ export interface Endpoints {
     "get"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/repos#get-the-combined-status-for-a-specific-reference
+   * @see https://docs.github.com/rest/commits/statuses#get-the-combined-status-for-a-specific-reference
    */
   "GET /repos/{owner}/{repo}/commits/{ref}/status": Operation<
     "/repos/{owner}/{repo}/commits/{ref}/status",
     "get"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/repos#list-commit-statuses-for-a-reference
+   * @see https://docs.github.com/rest/commits/statuses#list-commit-statuses-for-a-reference
    */
   "GET /repos/{owner}/{repo}/commits/{ref}/statuses": Operation<
     "/repos/{owner}/{repo}/commits/{ref}/statuses",
     "get"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/repos#get-community-profile-metrics
+   * @see https://docs.github.com/rest/metrics/community#get-community-profile-metrics
    */
   "GET /repos/{owner}/{repo}/community/profile": Operation<
     "/repos/{owner}/{repo}/community/profile",
     "get"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/repos#compare-two-commits
+   * @see https://docs.github.com/rest/commits/commits#compare-two-commits
    */
   "GET /repos/{owner}/{repo}/compare/{basehead}": Operation<
     "/repos/{owner}/{repo}/compare/{basehead}",
@@ -2691,6 +2644,20 @@ export interface Endpoints {
    */
   "GET /repos/{owner}/{repo}/contributors": Operation<
     "/repos/{owner}/{repo}/contributors",
+    "get"
+  >;
+  /**
+   * @see https://docs.github.com/rest/reference/dependabot#list-dependabot-alerts-for-a-repository
+   */
+  "GET /repos/{owner}/{repo}/dependabot/alerts": Operation<
+    "/repos/{owner}/{repo}/dependabot/alerts",
+    "get"
+  >;
+  /**
+   * @see https://docs.github.com/rest/reference/dependabot#get-a-dependabot-alert
+   */
+  "GET /repos/{owner}/{repo}/dependabot/alerts/{alert_number}": Operation<
+    "/repos/{owner}/{repo}/dependabot/alerts/{alert_number}",
     "get"
   >;
   /**
@@ -2750,7 +2717,7 @@ export interface Endpoints {
     "get"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/repos#get-all-environments
+   * @see https://docs.github.com/rest/deployments/environments#list-environments
    */
   "GET /repos/{owner}/{repo}/environments": Operation<
     "/repos/{owner}/{repo}/environments",
@@ -2761,6 +2728,20 @@ export interface Endpoints {
    */
   "GET /repos/{owner}/{repo}/environments/{environment_name}": Operation<
     "/repos/{owner}/{repo}/environments/{environment_name}",
+    "get"
+  >;
+  /**
+   * @see https://docs.github.com/rest/deployments/branch-policies#list-deployment-branch-policies
+   */
+  "GET /repos/{owner}/{repo}/environments/{environment_name}/deployment-branch-policies": Operation<
+    "/repos/{owner}/{repo}/environments/{environment_name}/deployment-branch-policies",
+    "get"
+  >;
+  /**
+   * @see https://docs.github.com/rest/deployments/branch-policies#get-deployment-branch-policy
+   */
+  "GET /repos/{owner}/{repo}/environments/{environment_name}/deployment-branch-policies/{branch_policy_id}": Operation<
+    "/repos/{owner}/{repo}/environments/{environment_name}/deployment-branch-policies/{branch_policy_id}",
     "get"
   >;
   /**
@@ -2820,35 +2801,35 @@ export interface Endpoints {
     "get"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/repos#list-repository-webhooks
+   * @see https://docs.github.com/rest/webhooks/repos#list-repository-webhooks
    */
   "GET /repos/{owner}/{repo}/hooks": Operation<
     "/repos/{owner}/{repo}/hooks",
     "get"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/repos#get-a-repository-webhook
+   * @see https://docs.github.com/rest/webhooks/repos#get-a-repository-webhook
    */
   "GET /repos/{owner}/{repo}/hooks/{hook_id}": Operation<
     "/repos/{owner}/{repo}/hooks/{hook_id}",
     "get"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/repos#get-a-webhook-configuration-for-a-repository
+   * @see https://docs.github.com/rest/webhooks/repo-config#get-a-webhook-configuration-for-a-repository
    */
   "GET /repos/{owner}/{repo}/hooks/{hook_id}/config": Operation<
     "/repos/{owner}/{repo}/hooks/{hook_id}/config",
     "get"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/repos#list-deliveries-for-a-repository-webhook
+   * @see https://docs.github.com/rest/webhooks/repo-deliveries#list-deliveries-for-a-repository-webhook
    */
   "GET /repos/{owner}/{repo}/hooks/{hook_id}/deliveries": Operation<
     "/repos/{owner}/{repo}/hooks/{hook_id}/deliveries",
     "get"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/repos#get-a-delivery-for-a-repository-webhook
+   * @see https://docs.github.com/rest/webhooks/repo-deliveries#get-a-delivery-for-a-repository-webhook
    */
   "GET /repos/{owner}/{repo}/hooks/{hook_id}/deliveries/{delivery_id}": Operation<
     "/repos/{owner}/{repo}/hooks/{hook_id}/deliveries/{delivery_id}",
@@ -2890,7 +2871,7 @@ export interface Endpoints {
     "get"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/repos#list-repository-invitations
+   * @see https://docs.github.com/rest/collaborators/invitations#list-repository-invitations
    */
   "GET /repos/{owner}/{repo}/invitations": Operation<
     "/repos/{owner}/{repo}/invitations",
@@ -3051,35 +3032,35 @@ export interface Endpoints {
     "get"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/repos#get-a-github-pages-site
+   * @see https://docs.github.com/rest/pages#get-a-github-pages-site
    */
   "GET /repos/{owner}/{repo}/pages": Operation<
     "/repos/{owner}/{repo}/pages",
     "get"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/repos#list-github-pages-builds
+   * @see https://docs.github.com/rest/pages#list-github-pages-builds
    */
   "GET /repos/{owner}/{repo}/pages/builds": Operation<
     "/repos/{owner}/{repo}/pages/builds",
     "get"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/repos#get-latest-pages-build
+   * @see https://docs.github.com/rest/pages#get-latest-pages-build
    */
   "GET /repos/{owner}/{repo}/pages/builds/latest": Operation<
     "/repos/{owner}/{repo}/pages/builds/latest",
     "get"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/repos#get-github-pages-build
+   * @see https://docs.github.com/rest/pages#get-github-pages-build
    */
   "GET /repos/{owner}/{repo}/pages/builds/{build_id}": Operation<
     "/repos/{owner}/{repo}/pages/builds/{build_id}",
     "get"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/repos#get-a-dns-health-check-for-github-pages
+   * @see https://docs.github.com/rest/pages#get-a-dns-health-check-for-github-pages
    */
   "GET /repos/{owner}/{repo}/pages/health": Operation<
     "/repos/{owner}/{repo}/pages/health",
@@ -3156,7 +3137,7 @@ export interface Endpoints {
     "get"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/pulls#list-requested-reviewers-for-a-pull-request
+   * @see https://docs.github.com/rest/reference/pulls#get-all-requested-reviewers-for-a-pull-request
    */
   "GET /repos/{owner}/{repo}/pulls/{pull_number}/requested_reviewers": Operation<
     "/repos/{owner}/{repo}/pulls/{pull_number}/requested_reviewers",
@@ -3275,35 +3256,35 @@ export interface Endpoints {
     "get"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/repos#get-the-weekly-commit-activity
+   * @see https://docs.github.com/rest/metrics/statistics#get-the-weekly-commit-activity
    */
   "GET /repos/{owner}/{repo}/stats/code_frequency": Operation<
     "/repos/{owner}/{repo}/stats/code_frequency",
     "get"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/repos#get-the-last-year-of-commit-activity
+   * @see https://docs.github.com/rest/metrics/statistics#get-the-last-year-of-commit-activity
    */
   "GET /repos/{owner}/{repo}/stats/commit_activity": Operation<
     "/repos/{owner}/{repo}/stats/commit_activity",
     "get"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/repos#get-all-contributor-commit-activity
+   * @see https://docs.github.com/rest/metrics/statistics#get-all-contributor-commit-activity
    */
   "GET /repos/{owner}/{repo}/stats/contributors": Operation<
     "/repos/{owner}/{repo}/stats/contributors",
     "get"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/repos#get-the-weekly-commit-count
+   * @see https://docs.github.com/rest/metrics/statistics#get-the-weekly-commit-count
    */
   "GET /repos/{owner}/{repo}/stats/participation": Operation<
     "/repos/{owner}/{repo}/stats/participation",
     "get"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/repos#get-the-hourly-commit-count-for-each-day
+   * @see https://docs.github.com/rest/statistics/repos#get-the-hourly-commit-count-for-each-day
    */
   "GET /repos/{owner}/{repo}/stats/punch_card": Operation<
     "/repos/{owner}/{repo}/stats/punch_card",
@@ -3359,28 +3340,28 @@ export interface Endpoints {
     "get"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/repos#get-repository-clones
+   * @see https://docs.github.com/rest/metrics/traffic#get-repository-clones
    */
   "GET /repos/{owner}/{repo}/traffic/clones": Operation<
     "/repos/{owner}/{repo}/traffic/clones",
     "get"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/repos#get-top-referral-paths
+   * @see https://docs.github.com/rest/metrics/traffic#get-top-referral-paths
    */
   "GET /repos/{owner}/{repo}/traffic/popular/paths": Operation<
     "/repos/{owner}/{repo}/traffic/popular/paths",
     "get"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/repos#get-top-referral-sources
+   * @see https://docs.github.com/rest/metrics/traffic#get-top-referral-sources
    */
   "GET /repos/{owner}/{repo}/traffic/popular/referrers": Operation<
     "/repos/{owner}/{repo}/traffic/popular/referrers",
     "get"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/repos#get-page-views
+   * @see https://docs.github.com/rest/metrics/traffic#get-page-views
    */
   "GET /repos/{owner}/{repo}/traffic/views": Operation<
     "/repos/{owner}/{repo}/traffic/views",
@@ -3423,48 +3404,6 @@ export interface Endpoints {
    */
   "GET /repositories/{repository_id}/environments/{environment_name}/secrets/{secret_name}": Operation<
     "/repositories/{repository_id}/environments/{environment_name}/secrets/{secret_name}",
-    "get"
-  >;
-  /**
-   * @see https://docs.github.com/rest/reference/enterprise-admin#list-provisioned-scim-groups-for-an-enterprise
-   */
-  "GET /scim/v2/enterprises/{enterprise}/Groups": Operation<
-    "/scim/v2/enterprises/{enterprise}/Groups",
-    "get"
-  >;
-  /**
-   * @see https://docs.github.com/rest/reference/enterprise-admin#get-scim-provisioning-information-for-an-enterprise-group
-   */
-  "GET /scim/v2/enterprises/{enterprise}/Groups/{scim_group_id}": Operation<
-    "/scim/v2/enterprises/{enterprise}/Groups/{scim_group_id}",
-    "get"
-  >;
-  /**
-   * @see https://docs.github.com/rest/reference/enterprise-admin#list-scim-provisioned-identities-for-an-enterprise
-   */
-  "GET /scim/v2/enterprises/{enterprise}/Users": Operation<
-    "/scim/v2/enterprises/{enterprise}/Users",
-    "get"
-  >;
-  /**
-   * @see https://docs.github.com/rest/reference/enterprise-admin#get-scim-provisioning-information-for-an-enterprise-user
-   */
-  "GET /scim/v2/enterprises/{enterprise}/Users/{scim_user_id}": Operation<
-    "/scim/v2/enterprises/{enterprise}/Users/{scim_user_id}",
-    "get"
-  >;
-  /**
-   * @see https://docs.github.com/rest/reference/scim#list-scim-provisioned-identities
-   */
-  "GET /scim/v2/organizations/{org}/Users": Operation<
-    "/scim/v2/organizations/{org}/Users",
-    "get"
-  >;
-  /**
-   * @see https://docs.github.com/rest/reference/scim#get-scim-provisioning-information-for-a-user
-   */
-  "GET /scim/v2/organizations/{org}/Users/{scim_user_id}": Operation<
-    "/scim/v2/organizations/{org}/Users/{scim_user_id}",
     "get"
   >;
   /**
@@ -3589,13 +3528,6 @@ export interface Endpoints {
    */
   "GET /teams/{team_id}/repos/{owner}/{repo}": Operation<
     "/teams/{team_id}/repos/{owner}/{repo}",
-    "get"
-  >;
-  /**
-   * @see https://docs.github.com/rest/reference/teams#list-idp-groups-for-a-team-legacy
-   */
-  "GET /teams/{team_id}/team-sync/group-mappings": Operation<
-    "/teams/{team_id}/team-sync/group-mappings",
     "get"
   >;
   /**
@@ -3787,7 +3719,7 @@ export interface Endpoints {
     "get"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/packages#get-all-package-versions-for-a-package-owned-by-the-authenticated-user
+   * @see https://docs.github.com/rest/packages#get-all-package-versions-for-a-package-owned-by-the-authenticated-user
    */
   "GET /user/packages/{package_type}/{package_name}/versions": Operation<
     "/user/packages/{package_type}/{package_name}/versions",
@@ -3809,10 +3741,21 @@ export interface Endpoints {
    */
   "GET /user/repos": Operation<"/user/repos", "get">;
   /**
-   * @see https://docs.github.com/rest/reference/repos#list-repository-invitations-for-the-authenticated-user
+   * @see https://docs.github.com/rest/collaborators/invitations#list-repository-invitations-for-the-authenticated-user
    */
   "GET /user/repository_invitations": Operation<
     "/user/repository_invitations",
+    "get"
+  >;
+  /**
+   * @see https://docs.github.com/rest/reference/users#list-public-ssh-signing-keys-for-the-authenticated-user
+   */
+  "GET /user/ssh_signing_keys": Operation<"/user/ssh_signing_keys", "get">;
+  /**
+   * @see https://docs.github.com/rest/reference/users#get-a-ssh-signing-key-for-the-authenticated-user
+   */
+  "GET /user/ssh_signing_keys/{ssh_signing_key_id}": Operation<
+    "/user/ssh_signing_keys/{ssh_signing_key_id}",
     "get"
   >;
   /**
@@ -3929,7 +3872,7 @@ export interface Endpoints {
     "get"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/packages#get-all-package-versions-for-a-package-owned-by-a-user
+   * @see https://docs.github.com/rest/packages#get-all-package-versions-for-a-package-owned-by-a-user
    */
   "GET /users/{username}/packages/{package_type}/{package_name}/versions": Operation<
     "/users/{username}/packages/{package_type}/{package_name}/versions",
@@ -3989,6 +3932,13 @@ export interface Endpoints {
     "get"
   >;
   /**
+   * @see https://docs.github.com/rest/reference/users#list-ssh-signing-keys-for-a-user
+   */
+  "GET /users/{username}/ssh_signing_keys": Operation<
+    "/users/{username}/ssh_signing_keys",
+    "get"
+  >;
+  /**
    * @see https://docs.github.com/rest/reference/activity#list-repositories-starred-by-a-user
    */
   "GET /users/{username}/starred": Operation<
@@ -4015,13 +3965,6 @@ export interface Endpoints {
    */
   "PATCH /applications/{client_id}/token": Operation<
     "/applications/{client_id}/token",
-    "patch"
-  >;
-  /**
-   * @see https://docs.github.com/rest/reference/oauth-authorizations#update-an-existing-authorization
-   */
-  "PATCH /authorizations/{authorization_id}": Operation<
-    "/authorizations/{authorization_id}",
     "patch"
   >;
   /**
@@ -4061,6 +4004,13 @@ export interface Endpoints {
     "patch"
   >;
   /**
+   * @see https://docs.github.com/rest/reference/orgs#update-a-custom-role
+   */
+  "PATCH /orgs/{org}/custom_roles/{role_id}": Operation<
+    "/orgs/{org}/custom_roles/{role_id}",
+    "patch"
+  >;
+  /**
    * @see https://docs.github.com/rest/reference/orgs#update-an-organization-webhook
    */
   "PATCH /orgs/{org}/hooks/{hook_id}": Operation<
@@ -4093,20 +4043,6 @@ export interface Endpoints {
    */
   "PATCH /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/comments/{comment_number}": Operation<
     "/orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/comments/{comment_number}",
-    "patch"
-  >;
-  /**
-   * @see https://docs.github.com/rest/reference/teams#link-external-idp-group-team-connection
-   */
-  "PATCH /orgs/{org}/teams/{team_slug}/external-groups": Operation<
-    "/orgs/{org}/teams/{team_slug}/external-groups",
-    "patch"
-  >;
-  /**
-   * @see https://docs.github.com/rest/reference/teams#create-or-update-idp-group-connections
-   */
-  "PATCH /orgs/{org}/teams/{team_slug}/team-sync/group-mappings": Operation<
-    "/orgs/{org}/teams/{team_slug}/team-sync/group-mappings",
     "patch"
   >;
   /**
@@ -4167,10 +4103,17 @@ export interface Endpoints {
     "patch"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/repos#update-a-commit-comment
+   * @see https://docs.github.com/rest/commits/comments#update-a-commit-comment
    */
   "PATCH /repos/{owner}/{repo}/comments/{comment_id}": Operation<
     "/repos/{owner}/{repo}/comments/{comment_id}",
+    "patch"
+  >;
+  /**
+   * @see https://docs.github.com/rest/reference/dependabot#update-a-dependabot-alert
+   */
+  "PATCH /repos/{owner}/{repo}/dependabot/alerts/{alert_number}": Operation<
+    "/repos/{owner}/{repo}/dependabot/alerts/{alert_number}",
     "patch"
   >;
   /**
@@ -4181,14 +4124,14 @@ export interface Endpoints {
     "patch"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/repos#update-a-repository-webhook
+   * @see https://docs.github.com/rest/webhooks/repos#update-a-repository-webhook
    */
   "PATCH /repos/{owner}/{repo}/hooks/{hook_id}": Operation<
     "/repos/{owner}/{repo}/hooks/{hook_id}",
     "patch"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/repos#update-a-webhook-configuration-for-a-repository
+   * @see https://docs.github.com/rest/webhooks/repo-config#update-a-webhook-configuration-for-a-repository
    */
   "PATCH /repos/{owner}/{repo}/hooks/{hook_id}/config": Operation<
     "/repos/{owner}/{repo}/hooks/{hook_id}/config",
@@ -4216,7 +4159,7 @@ export interface Endpoints {
     "patch"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/repos#update-a-repository-invitation
+   * @see https://docs.github.com/rest/collaborators/invitations#update-a-repository-invitation
    */
   "PATCH /repos/{owner}/{repo}/invitations/{invitation_id}": Operation<
     "/repos/{owner}/{repo}/invitations/{invitation_id}",
@@ -4286,27 +4229,6 @@ export interface Endpoints {
     "patch"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/enterprise-admin#update-an-attribute-for-a-scim-enterprise-group
-   */
-  "PATCH /scim/v2/enterprises/{enterprise}/Groups/{scim_group_id}": Operation<
-    "/scim/v2/enterprises/{enterprise}/Groups/{scim_group_id}",
-    "patch"
-  >;
-  /**
-   * @see https://docs.github.com/rest/reference/enterprise-admin#update-an-attribute-for-a-scim-enterprise-user
-   */
-  "PATCH /scim/v2/enterprises/{enterprise}/Users/{scim_user_id}": Operation<
-    "/scim/v2/enterprises/{enterprise}/Users/{scim_user_id}",
-    "patch"
-  >;
-  /**
-   * @see https://docs.github.com/rest/reference/scim#update-an-attribute-for-a-scim-user
-   */
-  "PATCH /scim/v2/organizations/{org}/Users/{scim_user_id}": Operation<
-    "/scim/v2/organizations/{org}/Users/{scim_user_id}",
-    "patch"
-  >;
-  /**
    * @see https://docs.github.com/rest/reference/teams/#update-a-team-legacy
    */
   "PATCH /teams/{team_id}": Operation<"/teams/{team_id}", "patch">;
@@ -4322,13 +4244,6 @@ export interface Endpoints {
    */
   "PATCH /teams/{team_id}/discussions/{discussion_number}/comments/{comment_number}": Operation<
     "/teams/{team_id}/discussions/{discussion_number}/comments/{comment_number}",
-    "patch"
-  >;
-  /**
-   * @see https://docs.github.com/rest/reference/teams#create-or-update-idp-group-connections-legacy
-   */
-  "PATCH /teams/{team_id}/team-sync/group-mappings": Operation<
-    "/teams/{team_id}/team-sync/group-mappings",
     "patch"
   >;
   /**
@@ -4354,7 +4269,7 @@ export interface Endpoints {
     "patch"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/repos#accept-a-repository-invitation
+   * @see https://docs.github.com/rest/collaborators/invitations#accept-a-repository-invitation
    */
   "PATCH /user/repository_invitations/{invitation_id}": Operation<
     "/user/repository_invitations/{invitation_id}",
@@ -4395,10 +4310,6 @@ export interface Endpoints {
     "/applications/{client_id}/token/scoped",
     "post"
   >;
-  /**
-   * @see https://docs.github.com/rest/reference/oauth-authorizations#create-a-new-authorization
-   */
-  "POST /authorizations": Operation<"/authorizations", "post">;
   /**
    * @see https://docs.github.com/rest/reference/actions#create-self-hosted-runner-group-for-an-enterprise
    */
@@ -4476,6 +4387,13 @@ export interface Endpoints {
    */
   "POST /orgs/{org}/actions/runners/{runner_id}/labels": Operation<
     "/orgs/{org}/actions/runners/{runner_id}/labels",
+    "post"
+  >;
+  /**
+   * @see https://docs.github.com/rest/reference/orgs#create-a-custom-role
+   */
+  "POST /orgs/{org}/custom_roles": Operation<
+    "/orgs/{org}/custom_roles",
     "post"
   >;
   /**
@@ -4563,6 +4481,13 @@ export interface Endpoints {
    */
   "POST /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/reactions": Operation<
     "/orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/reactions",
+    "post"
+  >;
+  /**
+   * @see https://docs.github.com/rest/reference/orgs#enable-or-disable-security-product-on-all-org-repos
+   */
+  "POST /orgs/{org}/{security_product}/{enablement}": Operation<
+    "/orgs/{org}/{security_product}/{enablement}",
     "post"
   >;
   /**
@@ -4769,7 +4694,7 @@ export interface Endpoints {
     "post"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/repos#create-a-commit-comment
+   * @see https://docs.github.com/rest/commits/comments#create-a-commit-comment
    */
   "POST /repos/{owner}/{repo}/commits/{commit_sha}/comments": Operation<
     "/repos/{owner}/{repo}/commits/{commit_sha}/comments",
@@ -4801,6 +4726,13 @@ export interface Endpoints {
    */
   "POST /repos/{owner}/{repo}/dispatches": Operation<
     "/repos/{owner}/{repo}/dispatches",
+    "post"
+  >;
+  /**
+   * @see https://docs.github.com/rest/deployments/branch-policies#create-deployment-branch-policy
+   */
+  "POST /repos/{owner}/{repo}/environments/{environment_name}/deployment-branch-policies": Operation<
+    "/repos/{owner}/{repo}/environments/{environment_name}/deployment-branch-policies",
     "post"
   >;
   /**
@@ -4846,28 +4778,28 @@ export interface Endpoints {
     "post"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/repos#create-a-repository-webhook
+   * @see https://docs.github.com/rest/webhooks/repos#create-a-repository-webhook
    */
   "POST /repos/{owner}/{repo}/hooks": Operation<
     "/repos/{owner}/{repo}/hooks",
     "post"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/repos#redeliver-a-delivery-for-a-repository-webhook
+   * @see https://docs.github.com/rest/webhooks/repo-deliveries#redeliver-a-delivery-for-a-repository-webhook
    */
   "POST /repos/{owner}/{repo}/hooks/{hook_id}/deliveries/{delivery_id}/attempts": Operation<
     "/repos/{owner}/{repo}/hooks/{hook_id}/deliveries/{delivery_id}/attempts",
     "post"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/repos#ping-a-repository-webhook
+   * @see https://docs.github.com/rest/webhooks/repos#ping-a-repository-webhook
    */
   "POST /repos/{owner}/{repo}/hooks/{hook_id}/pings": Operation<
     "/repos/{owner}/{repo}/hooks/{hook_id}/pings",
     "post"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/repos#test-the-push-repository-webhook
+   * @see https://docs.github.com/rest/webhooks/repos#test-the-push-repository-webhook
    */
   "POST /repos/{owner}/{repo}/hooks/{hook_id}/tests": Operation<
     "/repos/{owner}/{repo}/hooks/{hook_id}/tests",
@@ -4951,17 +4883,24 @@ export interface Endpoints {
     "post"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/repos#create-a-github-pages-site
+   * @see https://docs.github.com/rest/pages#create-a-github-pages-site
    */
   "POST /repos/{owner}/{repo}/pages": Operation<
     "/repos/{owner}/{repo}/pages",
     "post"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/repos#request-a-github-pages-build
+   * @see https://docs.github.com/rest/pages#request-a-github-pages-build
    */
   "POST /repos/{owner}/{repo}/pages/builds": Operation<
     "/repos/{owner}/{repo}/pages/builds",
+    "post"
+  >;
+  /**
+   * @see https://docs.github.com/rest/pages#create-a-github-pages-deployment
+   */
+  "POST /repos/{owner}/{repo}/pages/deployment": Operation<
+    "/repos/{owner}/{repo}/pages/deployment",
     "post"
   >;
   /**
@@ -5049,7 +4988,7 @@ export interface Endpoints {
     "post"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/repos#create-a-commit-status
+   * @see https://docs.github.com/rest/commits/statuses#create-a-commit-status
    */
   "POST /repos/{owner}/{repo}/statuses/{sha}": Operation<
     "/repos/{owner}/{repo}/statuses/{sha}",
@@ -5074,27 +5013,6 @@ export interface Endpoints {
    */
   "POST /repos/{template_owner}/{template_repo}/generate": Operation<
     "/repos/{template_owner}/{template_repo}/generate",
-    "post"
-  >;
-  /**
-   * @see https://docs.github.com/rest/reference/enterprise-admin#provision-a-scim-enterprise-group-and-invite-users
-   */
-  "POST /scim/v2/enterprises/{enterprise}/Groups": Operation<
-    "/scim/v2/enterprises/{enterprise}/Groups",
-    "post"
-  >;
-  /**
-   * @see https://docs.github.com/rest/reference/enterprise-admin#provision-and-invite-a-scim-enterprise-user
-   */
-  "POST /scim/v2/enterprises/{enterprise}/Users": Operation<
-    "/scim/v2/enterprises/{enterprise}/Users",
-    "post"
-  >;
-  /**
-   * @see https://docs.github.com/rest/reference/scim#provision-and-invite-a-scim-user
-   */
-  "POST /scim/v2/organizations/{org}/Users": Operation<
-    "/scim/v2/organizations/{org}/Users",
     "post"
   >;
   /**
@@ -5189,6 +5107,10 @@ export interface Endpoints {
    */
   "POST /user/repos": Operation<"/user/repos", "post">;
   /**
+   * @see https://docs.github.com/rest/reference/users#create-an-ssh-signing-key-for-the-authenticated-user
+   */
+  "POST /user/ssh_signing_keys": Operation<"/user/ssh_signing_keys", "post">;
+  /**
    * @see https://docs.github.com/rest/reference/packages#restore-a-package-for-a-user
    */
   "POST /users/{username}/packages/{package_type}/{package_name}/restore{?token}": Operation<
@@ -5214,27 +5136,6 @@ export interface Endpoints {
    */
   "PUT /app/installations/{installation_id}/suspended": Operation<
     "/app/installations/{installation_id}/suspended",
-    "put"
-  >;
-  /**
-   * @see https://docs.github.com/rest/reference/oauth-authorizations#get-or-create-an-authorization-for-a-specific-app
-   */
-  "PUT /authorizations/clients/{client_id}": Operation<
-    "/authorizations/clients/{client_id}",
-    "put"
-  >;
-  /**
-   * @see https://docs.github.com/rest/reference/oauth-authorizations#get-or-create-an-authorization-for-a-specific-app-and-fingerprint
-   */
-  "PUT /authorizations/clients/{client_id}/{fingerprint}": Operation<
-    "/authorizations/clients/{client_id}/{fingerprint}",
-    "put"
-  >;
-  /**
-   * @see https://docs.github.com/rest/reference/actions/oidc#set-actions-oidc-custom-issuer-policy-for-enterprise
-   */
-  "PUT /enterprises/{enterprise}/actions/oidc/customization/issuer": Operation<
-    "/enterprises/{enterprise}/actions/oidc/customization/issuer",
     "put"
   >;
   /**
@@ -5323,10 +5224,24 @@ export interface Endpoints {
     "put"
   >;
   /**
-   * @see https://docs.github.com/rest/actions/oidc#set-the-customization-template-for-an-oidc-subject-claim-for-an-organization
+   * @see https://docs.github.com/rest/reference/codespaces#create-or-update-an-organization-secret
    */
-  "PUT /orgs/{org}/actions/oidc/customization/sub": Operation<
-    "/orgs/{org}/actions/oidc/customization/sub",
+  "PUT /organizations/{org}/codespaces/secrets/{secret_name}": Operation<
+    "/organizations/{org}/codespaces/secrets/{secret_name}",
+    "put"
+  >;
+  /**
+   * @see https://docs.github.com/rest/reference/codespaces#set-selected-repositories-for-an-organization-secret
+   */
+  "PUT /organizations/{org}/codespaces/secrets/{secret_name}/repositories": Operation<
+    "/organizations/{org}/codespaces/secrets/{secret_name}/repositories",
+    "put"
+  >;
+  /**
+   * @see https://docs.github.com/rest/reference/codespaces#add-selected-repository-to-an-organization-secret
+   */
+  "PUT /organizations/{org}/codespaces/secrets/{secret_name}/repositories/{repository_id}": Operation<
+    "/organizations/{org}/codespaces/secrets/{secret_name}/repositories/{repository_id}",
     "put"
   >;
   /**
@@ -5369,13 +5284,6 @@ export interface Endpoints {
    */
   "PUT /orgs/{org}/actions/runner-groups/{runner_group_id}/repositories": Operation<
     "/orgs/{org}/actions/runner-groups/{runner_group_id}/repositories",
-    "put"
-  >;
-  /**
-   * @see https://docs.github.com/rest/reference/actions#add-repository-acess-to-a-self-hosted-runner-group-in-an-organization
-   */
-  "PUT /orgs/{org}/actions/runner-groups/{runner_group_id}/repositories/{repository_id}": Operation<
-    "/orgs/{org}/actions/runner-groups/{runner_group_id}/repositories/{repository_id}",
     "put"
   >;
   /**
@@ -5477,6 +5385,13 @@ export interface Endpoints {
     "put"
   >;
   /**
+   * @see https://docs.github.com/rest/reference/orgs#add-a-security-manager-team
+   */
+  "PUT /orgs/{org}/security-managers/teams/{team_slug}": Operation<
+    "/orgs/{org}/security-managers/teams/{team_slug}",
+    "put"
+  >;
+  /**
    * @see https://docs.github.com/rest/reference/teams#add-or-update-team-membership-for-a-user
    */
   "PUT /orgs/{org}/teams/{team_slug}/memberships/{username}": Operation<
@@ -5502,13 +5417,6 @@ export interface Endpoints {
    */
   "PUT /projects/{project_id}/collaborators/{username}": Operation<
     "/projects/{project_id}/collaborators/{username}",
-    "put"
-  >;
-  /**
-   * @see https://docs.github.com/rest/actions/oidc#set-the-opt-out-flag-of-an-oidc-subject-claim-customization-for-a-repository
-   */
-  "PUT /repos/{owner}/{repo}/actions/oidc/customization/sub": Operation<
-    "/repos/{owner}/{repo}/actions/oidc/customization/sub",
     "put"
   >;
   /**
@@ -5617,7 +5525,7 @@ export interface Endpoints {
     "put"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/repos#add-a-repository-collaborator
+   * @see https://docs.github.com/rest/collaborators/collaborators#add-a-repository-collaborator
    */
   "PUT /repos/{owner}/{repo}/collaborators/{username}": Operation<
     "/repos/{owner}/{repo}/collaborators/{username}",
@@ -5642,6 +5550,13 @@ export interface Endpoints {
    */
   "PUT /repos/{owner}/{repo}/environments/{environment_name}": Operation<
     "/repos/{owner}/{repo}/environments/{environment_name}",
+    "put"
+  >;
+  /**
+   * @see https://docs.github.com/rest/deployments/branch-policies#update-deployment-branch-policy
+   */
+  "PUT /repos/{owner}/{repo}/environments/{environment_name}/deployment-branch-policies/{branch_policy_id}": Operation<
+    "/repos/{owner}/{repo}/environments/{environment_name}/deployment-branch-policies/{branch_policy_id}",
     "put"
   >;
   /**
@@ -5687,7 +5602,7 @@ export interface Endpoints {
     "put"
   >;
   /**
-   * @see https://docs.github.com/rest/reference/repos#update-information-about-a-github-pages-site
+   * @see https://docs.github.com/rest/pages#update-information-about-a-github-pages-site
    */
   "PUT /repos/{owner}/{repo}/pages": Operation<
     "/repos/{owner}/{repo}/pages",
@@ -5747,27 +5662,6 @@ export interface Endpoints {
    */
   "PUT /repositories/{repository_id}/environments/{environment_name}/secrets/{secret_name}": Operation<
     "/repositories/{repository_id}/environments/{environment_name}/secrets/{secret_name}",
-    "put"
-  >;
-  /**
-   * @see https://docs.github.com/rest/reference/enterprise-admin#set-scim-information-for-a-provisioned-enterprise-group
-   */
-  "PUT /scim/v2/enterprises/{enterprise}/Groups/{scim_group_id}": Operation<
-    "/scim/v2/enterprises/{enterprise}/Groups/{scim_group_id}",
-    "put"
-  >;
-  /**
-   * @see https://docs.github.com/rest/reference/enterprise-admin#set-scim-information-for-a-provisioned-enterprise-user
-   */
-  "PUT /scim/v2/enterprises/{enterprise}/Users/{scim_user_id}": Operation<
-    "/scim/v2/enterprises/{enterprise}/Users/{scim_user_id}",
-    "put"
-  >;
-  /**
-   * @see https://docs.github.com/rest/reference/scim#set-scim-information-for-a-provisioned-user
-   */
-  "PUT /scim/v2/organizations/{org}/Users/{scim_user_id}": Operation<
-    "/scim/v2/organizations/{org}/Users/{scim_user_id}",
     "put"
   >;
   /**
